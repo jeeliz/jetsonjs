@@ -245,20 +245,20 @@ const JETSONJSCLIENT=(function(){
 			if (spec.wifiConfigIds){
 				console.log('INFO in JetsonJSClient.js - init() : a Wifi config is provided');
 				Object.keys(_wifiConfig.domElements).forEach(function(domKey){
-					var domId=spec.wifiConfigIds[domKey];
+					var domId=spec.wifiConfigIds[domKey]
 					var domElt=document.getElementById(domId)
 					if (!domElt){
-						console.log('WARNING in JetsonJSClient.js - init() : cannot found an input element which id =', domId, 'in the DOM');
-						return;
+						console.log('WARNING in JetsonJSClient.js - init() : cannot found an input element which id =', domId, 'in the DOM')
+						return
 					}
-					_wifiConfig.domElements[domKey]=domElt;
+					_wifiConfig.domElements[domKey]=domElt
 				});
 
 				if (_wifiConfig.domElements.buttonValidate){
-					_wifiConfig.domElements.buttonValidate.addEventListener('click', update_wifiConfig, false);
+					_wifiConfig.domElements.buttonValidate.addEventListener('click', update_wifiConfig, false)
 				}
 				if (_wifiConfig.domElements.buttonRefresh){
-					_wifiConfig.domElements.buttonRefresh.addEventListener('click', update_wifiNetworksList, false);
+					_wifiConfig.domElements.buttonRefresh.addEventListener('click', update_wifiNetworksList, false)
 				}
 			}
 		},	
@@ -272,6 +272,11 @@ const JETSONJSCLIENT=(function(){
 				_state=_states.error
 				reloadPageDelayed()
 			}
+		},
+
+		'shutdown': function(){
+			console.log('INFO in JetsonJSClient.js : shutdown() launched. THE DEVICE WILL SHUTDOWN BRO!!!')
+			send('CMD', 'SHUTDOWN')
 		}
 
 	} //end that

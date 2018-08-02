@@ -1,4 +1,7 @@
-const piWifi = require('pi-wifi') //DOC HERE : https://github.com/matrix-io/pi-wifi. based on wpaSupplicant
+const PIWIFI = require('pi-wifi') //DOC HERE : https://github.com/matrix-io/pi-wifi. based on wpaSupplicant
+const FS = require('fs')
+
+const _wifiConfigFileURL='../wifiConfigs/wifiConfig.json'
 //if not working, test this one based on network-manager : https://www.npmjs.com/package/node-wifi
 
 
@@ -11,7 +14,7 @@ const get_networks=(callback)=>{
 	}, 500); return;
 	//*/
 
-	piWifi.listNetworks((err, networksArray) => {
+	PIWIFI.listNetworks((err, networksArray) => {
 	  if (err) {
 	  	callback([])
 	    return console.log('ERROR in Wifi.js - get_neworks():', err.message)
@@ -34,17 +37,14 @@ networkDetails = {
 }
 */
 const connect=(networkDetails, callback)=>{
-	piWifi.connectTo(networkDetails, (err) => {
+	PIWIFI.connectTo(networkDetails, (err) => {
 	  if(!err) {
 	    console.log('INFO in Wifi.js - connect() : connected successfully')
-	    //callback(false)
-	    piWifi.status(null, (err, status)=>{
-	    	if (err){
-	    		console.log('WARNING in Wifi.js - connect() : cannot get status. err = ', err.message)
+	    get_status((err, status)=>{
+	    	if (err) {
 	    		callback(err, false)
 	    	} else {
-	    		console.log('INFO in Wifi.js - connect() : connected successfully and status got')
-	    		callback(false, status)
+	    		save_config(networkDetails, callback.bind(null,false, status))
 	    	}
 	    })
 	  } else {
@@ -54,9 +54,50 @@ const connect=(networkDetails, callback)=>{
 	})
 }
 
+const get_status=(callback)=>{
+	PIWIFI.status(null, (err, status)=>{
+    	if (err){
+    		console.log('WARNING in Wifi.js - get_status() : cannot get status. err = ', err.message)
+    		callback(err, false)
+    	} else {
+    		console.log('INFO in Wifi.js - get_status() : connected successfully and status got')
+    		callback(false, status)
+    	}
+	})
+}
 
+const save_config=(networkDetails, callback)=>{
+	const configStr=JSON.stringify(networkDetails)
+	console.log('INFO in Wifi.js - save_config() ', configStr)
+	FS.writeFile(_wifiConfigFileURL, configStr, 'utf8', callback)
+}
+
+const load_configSaved=(callback)=>{
+	FS.exists(_wifiConfigFileURL, (isExists)=>{
+    	if(isExists){
+    		FS.readFile(_wifiConfigFileURL, (err, data)=>{
+    			if (err) {
+    				console.log('ERROR in Wifi.js - load_config() : err=', err)
+    				callback(false, false)
+    				return
+    			}
+    			const networkDetails=JSON.parse(data)
+    			connect(networkDetails, (err, status)=>{
+    				if (err){ //not connected
+    					callback(networkDetails, false)
+    				} else { //co
+    					callback(networkDetails, status)
+    				}
+    			})
+    		})
+    	} else {
+    		callback(false, false)
+    	}
+   	})
+}
 
 module.exports={
+	load_configSaved: load_configSaved,
 	get_networks: get_networks,
 	connect: connect
 } 

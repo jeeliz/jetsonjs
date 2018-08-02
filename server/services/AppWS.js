@@ -4,7 +4,8 @@
 
 */
 const WS=new(require('./WSBroadcast'))()
-const Wifi=require('./Wifi')
+const WIFI=require('./Wifi')
+const { exec } = require('child_process')
 
 let _ExtWS, _ssids=[], _isConnected=false, _wifiConfig={
 	network: '',
@@ -27,7 +28,7 @@ const onMessage=(typeLabel, dataDict)=>{
 
 		case 'WIFIINFOS': //refresh the list of networks
 			console.log('INFO in AppWS : WIFIINFOS message received (ask for networks list)')
-			Wifi.get_networks((networks)=>{
+			WIFI.get_networks((networks)=>{
 				_ssids = networks.map((network)=>{return network.ssid})
 				send_wifiInfo()
 			})
@@ -44,17 +45,17 @@ const onMessage=(typeLabel, dataDict)=>{
 			if (dataDict.password!==false){
 				_wifiConfig.password=dataDict.password
 			}
-			Wifi.connect({
+			WIFI.connect({
 				ssid: _wifiConfig.network,
   				username: _wifiConfig.user,
   				password: _wifiConfig.password
 			}, (err, status)=>{
 				if (err){
-					console.log('ERROR in AppWS : cannot connect to the Wifi network - err =', err)
+					console.log('ERROR in AppWS : cannot connect to the WIFI network - err =', err)
 					_isConnected=false
 					send_wifiInfo()
 				} else {
-					console.log('INFO in AppWS :successfully connected to Wifi network. status =', status)
+					console.log('INFO in AppWS :successfully connected to WIFI network. status =', status)
 					_isConnected=true
 					_wifiConfig.IP=status.ip
 					send_wifiInfo()
@@ -62,10 +63,37 @@ const onMessage=(typeLabel, dataDict)=>{
 			})
 			break
 
+		case 'CMD':
+			console.log('INFO in AppWS : CMD received - CMD =', dataDict)
+			switch(dataDict){
+				case 'SHUTDOWN':
+				exec('shutdown -h now', (isSuccess)=>{
+
+				})
+				break
+			}
+			break;
+
 		default:
 			console.log('WARNING in AppWS - onMessage : unknow message type ', typeLabel)
 		break
 	}
+}
+
+const exec_cmd=(shellCmd, callback)=>{
+	exec(shellCmd, (err, stdout, stderr) => {
+	  if (err) {
+	  	console.log('WARNING in AppWS - exec_cmd() : cannot execute the command ', shellCmd, 'err =', err)
+	  	callback(false)
+	    return
+	  }
+
+	  // the *entire* stdout and stderr (buffered)
+	  console.log('INFO in AppWS - exec_cmd() : ', shellCmd, 'results:')
+	  console.log(`stdout: ${stdout}`)
+	  console.log(`stderr: ${stderr}`)
+	  callback(true)
+	})
 }
 
 const send_wifiInfo=()=>{
@@ -85,6 +113,16 @@ const init=(SETTINGS, ExtWS)=>{
 		port: SETTINGS.server.serviceAppWSPort,
 		callbackReady: ()=>{
 			console.log('INFO in AppWs.js - init() : WS server is ready and listenning...')
+			console.log('INFO in AppWS.js - init() : retrieve wifi config')
+			WIFI.load_configSaved((conf, status)=>{
+				if (!conf) return
+				_wifiConfig.network=conf.ssid
+				_wifiConfig.user=conf.username
+				_wifiConfig.password=conf.password
+				_wifiConfig.IP=(status&&status.ip)?status.ip:false
+				_isConnected=(status&&status.ip)?true:false
+				send_wifiInfo()
+			})
 		},
 		callbackMessage: onMessage,
 		callbackConnect: update_clientsCount
