@@ -37,6 +37,50 @@ We advise to install Ubuntu 16.04 LTS on the Jetson TX2. You can follow these st
 ### Testing
 
 
+## Specifications
+
+### JetsonJSClient.js
+
+`JetsonJSClient.js` and `settings.js` should be included in the HTML code of the web application running on the Jetson :
+```html
+<script src='auto/settings.js'></script>
+<script src='auto/JetsonJSClient.js'></script>
+```
+You can take a look at [/client/apps/sampleApp/](/client/apps/sampleApp/) to get an example. These scripts are prefixed by `auto/` because they are automatically copied into `<app path>/auto/` when the nodeJS server is launched. After the loading of the page you should initialize `JETSONJSCLIENT` with :
+
+```javascript
+JETSONJSCLIENT.init({
+	callbackReady:   //function called when the API is initialized,
+	callbackConnect: //function called when the External client is connected or disconnected,
+	   // the external client is the user in the final browser
+	   // this function is called with a boolean as argument
+	   // which is true if a user is connected, false otherwise
+	   // this function allows to slow down the rendering loop to save the GPU
+	   // if no user is connected
+	wifiConfigIds: //dictionnary, to connect the Wifi widget to the controller
+	   // see /client/apps/sampleApp/main.js to get an example
+})
+```
+
+You can then use these methods :
+
+`JETSONJSCLIENT.send_value(<dictionnary> dataDict)` : send a dictionnary of values to the server part. Example :
+```javascript
+JETSONJSCLIENT.send_value({
+	signalCos: Math.cos(w),
+	signalSin: Math.sin(w)
+})
+```
+
+`JETSONJSCLIENT.shutdown()` : shutdown the Jetson. It is an hardware shutdown (equivalent to the Unix command `shutdown -h now`)
+
+
+
+
+
+
+
+
 ## License
 The MIT License (MIT)
 
