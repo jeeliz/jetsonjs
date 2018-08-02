@@ -1,0 +1,59 @@
+.wifiConfig input,select,button {
+	color: white; background-color: #444;
+	border: 1px solid white;
+	width: 200px;
+}
+.wifiConfig select,button {
+	cursor: pointer;
+}
+.wifiConfig {
+	background-color: black;
+    color: white;
+    font-family: "Lucida Console", Monaco, monospace;
+    box-sizing: border-box;
+    padding: 10px;
+    line-height: 2em;
+    width: 416px;
+}
+.wifiConfig_title {
+	color: lime;
+	font-weight: bold;
+} 
+.wifiConfig_fieldLabel {
+	float: left;
+	clear: both;
+	width: 190px;
+}
+#wifiConfig_valid {
+	width: 191px;
+	height: 2em;
+}
+#wifiConfig_refresh {
+	width: 191px;
+	height: 2em;
+}
+.wifiFrozen {
+	opacity: 0.5;
+	pointer-events: none;
+	cursor: wait!important;
+}
+#wifiStatusIP {
+	width: 191px;
+	float: left;
+	height: 2em;
+}
+.wifiStatus {
+	width: 191px;
+	float: left;
+	text-align: center;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+#wifiStatusConnected{
+	background-color: darkgreen;
+	display: none;
+}
+#wifiStatusDisconnected{
+	background-color: red;
+	display: block;
+}

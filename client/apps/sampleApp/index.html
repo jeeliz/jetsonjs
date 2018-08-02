@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JetsonJS Sample app</title>
+	<meta charset='utf-8' />
+
+	<!-- YOU SHOULD INCLUDE THE SETTINGS FILE -->
+	<script src='auto/settings.js'></script>
+
+	<!-- YOU SHOULD INCLUDE JETSONJSCLIENT -->
+	<script src='auto/JetsonJSClient.js'></script>
+
+	<!-- MAIN SCRIPT -->
+	<script src='main.js'></script>
+
+	<link rel='stylesheet' type='text/css' href='wifiWidget.css' />
+	<style type='text/css'>
+	</style>
+</head> 
+
+<body onload='main()'>
+	<h1>JetsonJS sample app</h1>
+
+	<p>
+		<a href='https://github.com/jeeliz/jetsonjs'>Github repository of JetsonJS</a>
+	</p>
+	<p>
+		This application sends 2 sinusoïdals signals (<b>signalCos</b> and <b>signalSin</b>) with a period of 1 second. A new value is sent each 10ms.
+	</p>
+	<div class='wifiConfig' id='wifiConfig'>
+		<div class='wifiConfig_title'>Wifi configuration</div>
+		
+		<div class='wifiConfig_fieldLabel'>Network:</div><select id='wifiNetworks'></select><br/>
+		<div class='wifiConfig_fieldLabel'>User (facultative):</div><input type='text' id='wifiUser'/><br/>
+		<div class='wifiConfig_fieldLabel'>Password:</div><input type='text' id='wifiPassword' />
+		
+		<hr/>
+		<div class='wifiConfig_fieldLabel'>State :</div><div class='wifiStatus' id='wifiStatusConnected'>connected</div><div class='wifiStatus' id='wifiStatusDisconnected'>disconnected</div>
+		<div class='wifiConfig_fieldLabel'>IP :</div><div id='wifiStatusIP'></div><br/> 
+
+		<button id='wifiConfig_valid'>APPLY CONFIGURATION</button>
+		<button id='wifiConfig_refresh'>REFRESH NETWORKS</button>
+	</div>
+
+</body>
+</html>

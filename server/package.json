@@ -1,0 +1,16 @@
+{
+  "name": "jetsonjsserver",
+  "version": "1.0.0",
+  "description": "JetsonJS Server part",
+  "main": "JetsonJSServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jeeliz",
+  "license": "MIT",
+  "dependencies": {
+    "pi-wifi": "^1.2.0",
+    "static-server": "^2.2.1",
+    "ws": "^6.0.0"
+  }
+}

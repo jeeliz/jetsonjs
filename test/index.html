@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>JETSONJS - TEST FINAL APP</title>
+	<meta charset='utf-8' />
+	<script>
+
+		function main(){
+			var socket=new WebSocket('ws://127.0.0.1:8888') //port hould be server.serviceExtWSPort in settings.js
+		
+			// Connection opened
+			socket.addEventListener('open', function (event) {
+				console.log('Connected!')
+			});
+
+			// Listen for messages
+			var domLogs=document.getElementById('logs');
+			domLogs.value='';
+			socket.addEventListener('message', function (event) {
+			    var dataParsed=JSON.parse(event.data);
+			    var typeLabel=dataParsed.t;
+			    var data=dataParsed.m;
+
+			    switch(typeLabel){
+			    	case 'VAL':
+			    		domLogs.value+=JSON.stringify(data)+'\n'
+			    		break;
+			    }
+			});
+
+		} //end main()
+	</script>
+</head>
+<body style='background-color: silver' onload='main()'>
+	<h1>JETSONJS - TEST FINAL APP</h1>
+	values received :<br/>
+	<textarea id='logs' style='width: 80vw; height: 80vh'>
+
+
+	</textarea>
+</body>
+</html>
