@@ -274,6 +274,13 @@ const JETSONJSCLIENT=(function(){
 			}
 		},
 
+		'exec_shellCmd': function(cmd){
+			if (_state!==_states.idle){
+				return false
+			}
+			return send('SHELLCMD', cmd)
+		},
+
 		'shutdown': function(){
 			console.log('INFO in JetsonJSClient.js : shutdown() launched. THE DEVICE WILL SHUTDOWN BRO!!!')
 			send('CMD', 'SHUTDOWN')

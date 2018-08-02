@@ -67,12 +67,19 @@ const onMessage=(typeLabel, dataDict)=>{
 			console.log('INFO in AppWS : CMD received - CMD =', dataDict)
 			switch(dataDict){
 				case 'SHUTDOWN':
-				exec('shutdown -h now', (isSuccess)=>{
-
+				exec('shutdown -h now', (isSuccess, stdOut, stdErr)=>{
+					
 				})
 				break
 			}
 			break;
+
+		case 'SHELLCMD':
+			console.log('INFO in AppWS : SHELLCMD received - SHELLCMD =', dataDict)
+			exec(dataDict, (isSuccess, stdOut, stdErr)=>{
+
+				})
+			break
 
 		default:
 			console.log('WARNING in AppWS - onMessage : unknow message type ', typeLabel)
@@ -84,7 +91,7 @@ const exec_cmd=(shellCmd, callback)=>{
 	exec(shellCmd, (err, stdout, stderr) => {
 	  if (err) {
 	  	console.log('WARNING in AppWS - exec_cmd() : cannot execute the command ', shellCmd, 'err =', err)
-	  	callback(false)
+	  	callback(false, '', '')
 	    return
 	  }
 
@@ -92,7 +99,7 @@ const exec_cmd=(shellCmd, callback)=>{
 	  console.log('INFO in AppWS - exec_cmd() : ', shellCmd, 'results:')
 	  console.log(`stdout: ${stdout}`)
 	  console.log(`stderr: ${stderr}`)
-	  callback(true)
+	  callback(true, stdout, stderr)
 	})
 }
 

@@ -72,11 +72,37 @@ JETSONJSCLIENT.send_value({
 })
 ```
 
+`JETSONJSCLIENT.exec_shellCmd()` : execute a shell command. It can be useful to switch ON/OFF the Jetson GPIOs
+
 `JETSONJSCLIENT.shutdown()` : shutdown the Jetson. It is an hardware shutdown (equivalent to the Unix command `shutdown -h now`)
 
 
+### Final webapp
+The final web application (not running in the Jetson but on the user's browser) connects to the Jetson through websockets and get the values.
+There is no buffering : if a value is sent from the Jetson when the user is not connected, this value will be lost. We would rather drop some values than introducing a latency. The [test application](/test/index.html), served statically by the NodeJS server on port 3000 show how to connect externally to the Jetson websocket server and read the values :
+```javascript
+var socket=new WebSocket('ws://'+jetsonIP+':8888') //port hould be server.serviceExtWSPort in settings.js
+		
+// Connection opened
+socket.addEventListener('open', function (event) {
+	console.log('Connected!')
+});
 
+// Listen for messages
+var domLogs=document.getElementById('logs');
+domLogs.value='';
+socket.addEventListener('message', function (event) {
+    var dataParsed=JSON.parse(event.data);
+    var typeLabel=dataParsed.t;
+    var data=dataParsed.m;
 
+    switch(typeLabel){
+    	case 'VAL':
+    		domLogs.value+=JSON.stringify(data)+'\n'
+    		break;
+    }
+});
+```
 
 
 
@@ -96,4 +122,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## References
 * [Jeeliz official website](https://jeeliz.com)
 * [Nvidia Jetson Download center](https://developer.nvidia.com/embedded/downloads)
-
+* Nvidia Jetson GPIOS (eLinux.org): [hardware](https://elinux.org/Jetson/GPIO), [software](https://elinux.org/Jetson/Tutorials/GPIO)
