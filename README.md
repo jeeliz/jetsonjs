@@ -13,8 +13,9 @@ We want to embed an application running with JavaScript/WebGL on a Nvidia Jetson
 
 With this project, we can setup the Jetson to run the application as an embedded application and possibly stream output data through websockets on a Wifi network. So we can transform a web application into an embedded application.
 
+<center>
 ![Architecture](images/archi.png?raw=true "Architecture")
-
+</center>
 
 ## Architecture
 
