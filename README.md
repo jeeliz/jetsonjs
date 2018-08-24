@@ -5,6 +5,27 @@ Embedded systems with JavaScript/WebGL.
 ![Jetson TX2](images/jetsonTX2.png?raw=true "Jetson TX2")
 
 
+
+
+## Table of contents
+
+* [Presentation](#presentation)
+* [Architecture](#architecture)
+* [Setup](#setup)
+  * [Hardware hookup](#hardware-hookup)
+  * [Wifi connection](#wifi-connection)
+  * [Setup packages](#setup-packages)
+  * [Security](#security)
+* [Specifications](#specifications)
+  * [JetsonJSClient.js](#jetsonJSClient.js)
+  * [Final webapp](#final-webapp)
+* [See also](#see-also)
+* [License](#license)
+* [References](#references)
+
+
+
+
 ## Presentation
 
 The [Jetson TX2](https://developer.nvidia.com/embedded/buy/jetson-tx2) is a SoM (System on Module) with a powerful GPU. It has no competitor on the market yet. It is mainly used for deep learning or image processing purposes, using Nvidia Cuda API or OpenCL.
@@ -215,6 +236,10 @@ JETSONJSCLIENT.send_value({
 
 ### Final webapp
 The final web application (not running in the Jetson but on the user's browser) connects to the Jetson through websockets and get the values.
+
+This part is not mandatory: you can use JetsonJS to run JavaScript/WebGL code on the Jetson without linking it to an external web application. For example if the jetson is directly pluggued to an HDMI display.
+
+
 There is no buffering : if a value is sent from the Jetson when the user is not connected, this value will be lost. We would rather drop some values than introducing a latency. The [test application](/test/index.html), served statically by the NodeJS server on port 3000 show how to connect externally to the Jetson websocket server and read the values :
 ```javascript
 var socket=new WebSocket('ws://'+jetsonIP+':8888') //port hould be server.serviceExtWSPort in settings.js
@@ -240,6 +265,18 @@ socket.addEventListener('message', function (event) {
 });
 ```
 
+## See also
+[@Jeeliz](https://jeeliz.com) we have developed a very fast deep learning technology running in JavaScript/WebGL. It runs fully client side using the GPU of the device. It is perfect for progressive web applications. It is so fast that it can analyze video in real-time for these applications:
+
+* glasses virtual tryon: [demo web application](https://jeeliz.com/sunglasses), [github repository of our VTO widget](https://github.com/jeeliz/jeelizGlassesVTOWidget),
+* Snapchat/Facebook lenses like interactive face filters: [github repository of our "FaceFilter" library](https://github.com/jeeliz/jeelizFaceFilter),
+* augmented reality, interfaced with WebXR: [github repository of our "JeelizAR" library](https://github.com/jeeliz/jeelizAR),
+* in browser expression recognition: [github repository of our "Weboji" library](https://github.com/jeeliz/jeelizWeboji),
+* or even pupillometry: [github repository of our pupillometry project](https://github.com/jeeliz/jeelizPupillometry).
+
+In some uses cases, we need to embed our solution (for kiosks or IOT). The standard software stack proposed on the Jetson is useless with our framework because we do not use *Cuda*, so we did JetsonJS. Now, our technology can really run everywhere (embedded, mobile, desktop and web)!
+
+Stay tunned to our bleeding edge developments by subscribing to our [Youtube channel](https://www.youtube.com/channel/UC3XmXH1T3d1XFyOhrRiiUeA) or [Twitter @StartupJeeliz](https://twitter.com/StartupJeeliz) or our [Linkedin page](https://fr.linkedin.com/company/jeeliz)
 
 
 

@@ -29,3 +29,6 @@ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install npm --global
 sudo npm install -g electron --unsafe-perm=true --allow-root
+#
+echo "REMOVE .XINIT"
+mv ~/.xinit ~/.xinit.bak
