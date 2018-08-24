@@ -17,7 +17,7 @@ Embedded systems with JavaScript/WebGL.
   * [Setup packages](#setup-packages)
   * [Security](#security)
 * [Specifications](#specifications)
-  * [JetsonJSClient.js](#jetsonJSClient.js)
+  * [JetsonJSClient.js](#jetsonjsclientjs)
   * [Final webapp](#final-webapp)
 * [See also](#see-also)
 * [License](#license)
@@ -41,7 +41,7 @@ With this project, we can setup the Jetson to run the application as an embedded
 ## Architecture
 
 * `/client`: Client part of the application (running in the Jetson browser)
-  * `/JetsonJSClient.js` : Client side API,
+  * `/JetsonJSClient.js`: Client side API,
   * `/apps/`: Jetson web applications (`/apps/sampleApp` is the example application) which will run into the Jetson browser
 * `/server`: NodeJS server part (running on the Jetson)
   * `/start.sh`: bash script to launch the server part
@@ -204,21 +204,24 @@ You can take a look at [/client/apps/sampleApp/](/client/apps/sampleApp/) to get
 
 ```javascript
 JETSONJSCLIENT.init({
-	callbackReady:   //function called when the API is initialized,
-	callbackConnect: //function called when the External client is connected or disconnected,
-	   // the external client is the user in the final browser
-	   // this function is called with a boolean as argument
-	   // which is true if a user is connected, false otherwise
-	   // this function allows to slow down the rendering loop to save the GPU
-	   // if no user is connected
-	wifiConfigIds: //dictionnary, to connect the Wifi widget to the controller
-	   // see /client/apps/sampleApp/main.js to get an example
+  callbackReady:   //function, called when the API is initialized,
+  callbackConnect: //function, called when the External client is connected or disconnected,
+     // the external client is the user in the final browser
+     // this function is called with a boolean as argument
+     // which is true if a user is connected, false otherwise
+     // this function allows to slow down the rendering loop to save the GPU
+     // if no user is connected
+  wifiConfigIds: //dictionnary, to connect the Wifi widget to the controller
+     // see /client/apps/sampleApp/main.js to get an example
+  keyboardTargetsClass: //string, class of the <input> where a virtual keyboard should be displayed
+     // see  /client/apps/sampleApp/main.js to get an example
+     // of integration of the virtual keyboard
 })
 ```
 
 You can then use these methods :
 
-`JETSONJSCLIENT.send_value(<dictionnary> dataDict)` : send a dictionnary of values to the server part. Example :
+`JETSONJSCLIENT.send_value(<dictionnary> dataDict)`: send a dictionnary of values to the server part. Example :
 ```javascript
 JETSONJSCLIENT.send_value({
 	signalCos: Math.cos(w),
@@ -226,11 +229,13 @@ JETSONJSCLIENT.send_value({
 })
 ```
 
-`JETSONJSCLIENT.exec_shellCmd()` : execute a shell command. It can be useful to switch ON/OFF the Jetson GPIOs
+`JETSONJSCLIENT.exec_shellCmd()`: execute a shell command. It can be useful to switch ON/OFF the Jetson GPIOs
 
-`JETSONJSCLIENT.shutdown()` : shutdown the Jetson. It is an hardware shutdown (equivalent to the Unix command `shutdown -h now`)
+`JETSONJSCLIENT.fetch_wifi()`: update the wifi networks list
 
-`JETSONJSCLIENT.close()` : close the Electron window. Usefull for debug
+`JETSONJSCLIENT.shutdown()`: shutdown the Jetson. It is an hardware shutdown (equivalent to the Unix command `shutdown -h now`)
+
+`JETSONJSCLIENT.close()`: close the Electron window. Usefull for debug
 
 
 
@@ -240,7 +245,7 @@ The final web application (not running in the Jetson but on the user's browser) 
 This part is not mandatory: you can use JetsonJS to run JavaScript/WebGL code on the Jetson without linking it to an external web application. For example if the jetson is directly pluggued to an HDMI display.
 
 
-There is no buffering : if a value is sent from the Jetson when the user is not connected, this value will be lost. We would rather drop some values than introducing a latency. The [test application](/test/index.html), served statically by the NodeJS server on port 3000 show how to connect externally to the Jetson websocket server and read the values :
+There is no buffering: if a value is sent from the Jetson when the user is not connected, this value will be lost. We would rather drop some values than introducing a latency. The [test application](/test/index.html), served statically by the NodeJS server on port 3000 show how to connect externally to the Jetson websocket server and read the values :
 ```javascript
 var socket=new WebSocket('ws://'+jetsonIP+':8888') //port hould be server.serviceExtWSPort in settings.js
 		
@@ -274,9 +279,9 @@ socket.addEventListener('message', function (event) {
 * in browser expression recognition: [github repository of our "Weboji" library](https://github.com/jeeliz/jeelizWeboji),
 * or even pupillometry: [github repository of our pupillometry project](https://github.com/jeeliz/jeelizPupillometry).
 
-In some uses cases, we need to embed our solution (for kiosks or IOT). The standard software stack proposed on the Jetson is useless with our framework because we do not use *Cuda*, so we did JetsonJS. Now, our technology can really run everywhere (embedded, mobile, desktop and web)!
+In some use cases, we need to embed our solution (for kiosks or IOT). The standard software stack proposed on the Jetson is useless with our framework because we do not use *Cuda*, so we did JetsonJS. Now, our technology can really run everywhere (embedded, mobile, desktop and web)!
 
-Stay tunned to our bleeding edge developments by subscribing to our [Youtube channel](https://www.youtube.com/channel/UC3XmXH1T3d1XFyOhrRiiUeA) or [Twitter @StartupJeeliz](https://twitter.com/StartupJeeliz) or our [Linkedin page](https://fr.linkedin.com/company/jeeliz)
+Stay tunned to our bleeding edge developments by subscribing to our [Youtube channel](https://www.youtube.com/channel/UC3XmXH1T3d1XFyOhrRiiUeA) or [Twitter @StartupJeeliz](https://twitter.com/StartupJeeliz) or our [Linkedin page](https://fr.linkedin.com/company/jeeliz).
 
 
 
