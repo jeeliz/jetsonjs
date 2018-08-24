@@ -1,8 +1,19 @@
 const Fs = require('fs')
 const StaticServer = require('static-server') //see https://www.npmjs.com/package/static-server for doc
+const Wrench = require('wrench')
 
 const copy_file=(src, dst)=>{
 	Fs.createReadStream(src).pipe(Fs.createWriteStream(dst))
+}
+const copy_dir=(src, dst)=>{
+	Wrench.copyDirSyncRecursive(src, dst,{
+		forceDelete: true, // Whether to overwrite existing directory or not
+	    excludeHiddenUnix: true, // Whether to copy hidden Unix files or not (preceding .)
+	    preserveFiles: false, // If we're overwriting something and the file already exists, keep the existing
+	    preserveTimestamps: false, // Preserve the mtime and atime when copying files
+	    inflateSymlinks: false, // Whether to follow symlinks or not when copying files
+	    exclude: "readme*" // An exclude filter (either a regexp or a function)
+	})
 }
 
 const init=(SETTINGS)=>{
@@ -15,6 +26,7 @@ const init=(SETTINGS)=>{
 
 	//copy JetsonJSclient to the served path
 	copy_file(rootPath+'client/JetsonJSClient.js', fullAppAutoPath+'JetsonJSClient.js')
+	copy_dir(rootPath+'client/libs', fullAppAutoPath+'/libs')
 
 
 	//start the server :

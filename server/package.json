@@ -10,8 +10,10 @@
   "license": "MIT",
   "dependencies": {
     "fs": "0.0.1-security",
+    "node-wifi": "^2.0.4",
     "pi-wifi": "^1.2.0",
     "static-server": "^2.2.1",
+    "wrench": "^1.5.9",
     "ws": "^6.0.0"
   }
 }

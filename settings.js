@@ -1,6 +1,7 @@
 const SETTINGS={
 	client: { //settings for the client part
 		reloadTimeout: 2000, //timeout before page reloading if error, in ms
+		isAutoStartElectron: true
 	},
 
 	server: { //settings for the server part

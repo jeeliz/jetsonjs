@@ -16,6 +16,8 @@ function startApp(){
 
 function main(){ //entry point, called by body.onload()
 	JETSONJSCLIENT.init({
+		//keyboardTargetsClass: 'keyboard',
+
 		wifiConfigIds:{
 			divWidget: 'wifiConfig',
 			
@@ -30,6 +32,7 @@ function main(){ //entry point, called by body.onload()
 			buttonValidate: 'wifiConfig_valid',
 			buttonRefresh: 'wifiConfig_refresh'
 		},		
+
 		callbackReady: startApp,
 		callbackConnect: function(isClientConnected){
 			_isSendValues=isClientConnected

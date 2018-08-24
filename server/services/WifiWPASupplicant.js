@@ -1,8 +1,7 @@
-const PIWIFI = require('pi-wifi') //DOC HERE : https://github.com/matrix-io/pi-wifi. based on wpaSupplicant
+const PIWIFI = require('pi-wifi') //DOC HERE: https://github.com/matrix-io/pi-wifi. based on wpaSupplicant
 const FS = require('fs')
 
 const _wifiConfigFileURL='../wifiConfigs/wifiConfig.json'
-//if not working, test this one based on network-manager : https://www.npmjs.com/package/node-wifi
 
 
 //return a list of WIFI SSID :

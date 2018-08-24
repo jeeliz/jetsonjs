@@ -4,7 +4,8 @@
 
 */
 const WS=new(require('./WSBroadcast'))()
-const WIFI=require('./Wifi')
+//const WIFI=require('./WifiWPASupplicant') //deprecated, WPASupplicant version. Never tested
+const WIFI=require('./WifiNetworkManager')  //version using network manager
 const { exec } = require('child_process')
 
 let _ExtWS, _ssids=[], _isConnected=false, _wifiConfig={
@@ -30,7 +31,14 @@ const onMessage=(typeLabel, dataDict)=>{
 			console.log('INFO in AppWS : WIFIINFOS message received (ask for networks list)')
 			WIFI.get_networks((networks)=>{
 				_ssids = networks.map((network)=>{return network.ssid})
-				send_wifiInfo()
+				WIFI.get_status((err, status)=>{
+					if (status){
+						_wifiConfig.network=status.ssid
+						_wifiConfig.IP=status.ip
+						_isConnected=(status.ip)?true:false
+					}
+					send_wifiInfo()
+				})
 			})
 			break;
 
