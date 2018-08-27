@@ -667,6 +667,13 @@ const JETSONJSCLIENT=(function(){
 			} catch(e){
 				console.log('WARNING in JetsonJSClient.js - close(): Electron is not here or the app was not launched with Electron')
 			}
+		},
+
+		'set_GPIO': function(nb, val){
+			send('GPIO',{
+				'number': nb,
+				'val': val
+			})
 		}
 
 	} //end that

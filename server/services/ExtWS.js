@@ -3,7 +3,7 @@
 
 */
 
-const WS=new(require('./WSBroadcast'))()
+const WS=new(require('../wrappers/WSBroadcast'))()
 let _AppWS
 
 const onMessage=(typeLabel, dataDict)=>{

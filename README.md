@@ -188,6 +188,17 @@ And change the password of the `root` user:
 sudo passwd root
 ```
 
+### Add sudo rights
+Some scripts, like the GPIO setter script (*/server/wrappers/setGPIO.sh*) need to be executed as root. Run:
+```
+sudo visudo
+```
+and add:
+```
+nvidia ALL=(ALL) NOPASSWD: /home/nvidia/jetsonjs/server/wrappers/
+```
+Save and exit.
+
 
 
 
@@ -232,6 +243,8 @@ JETSONJSCLIENT.send_value({
 `JETSONJSCLIENT.exec_shellCmd()`: execute a shell command. It can be useful to switch ON/OFF the Jetson GPIOs
 
 `JETSONJSCLIENT.fetch_wifi()`: update the wifi networks list
+
+`JETSONJSCLIENT.set_GPIO(<int>number, <boolean>val)`: set the GPIO port number `number` to value `val`
 
 `JETSONJSCLIENT.shutdown()`: shutdown the Jetson. It is an hardware shutdown (equivalent to the Unix command `shutdown -h now`)
 
@@ -303,3 +316,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 * Nvidia Jetson GPIOS (eLinux.org): [hardware](https://elinux.org/Jetson/GPIO), [software](https://elinux.org/Jetson/Tutorials/GPIO)
 * Electron: [official website](https://electronjs.org/), [sample apps](https://github.com/hokein/electron-sample-apps)
 * Matchbox window manager: [source repositories](http://git.yoctoproject.org/)
+* Control the GPIOs: [Jetson support forum post](https://devtalk.nvidia.com/default/topic/1020887/jetson-tx2/how-to-configure-a-gpio-on-tx2-/)

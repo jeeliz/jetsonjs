@@ -3,10 +3,13 @@
 	  
 
 */
-const WS=new(require('./WSBroadcast'))()
+const WS=new(require('../wrappers/WSBroadcast'))()
 //const WIFI=require('./WifiWPASupplicant') //deprecated, WPASupplicant version. Never tested
-const WIFI=require('./WifiNetworkManager')  //version using network manager
-const { exec } = require('child_process')
+const WIFI=require('../wrappers/WifiNetworkManager')  //version using network manager
+const GPIO=require('../wrappers/GPIO')
+
+const EXECSH=require('../wrappers/ExecSh')
+
 
 let _ExtWS, _ssids=[], _isConnected=false, _wifiConfig={
 	network: '',
@@ -18,7 +21,14 @@ let _ExtWS, _ssids=[], _isConnected=false, _wifiConfig={
 const onMessage=(typeLabel, dataDict)=>{
 	switch(typeLabel){
 		case 'STATUS':
-			console.log('INFO in AppWS : STATUS message received - data =', dataDict)
+			console.log('INFO in AppWS: STATUS message received - data =', dataDict)
+		break
+
+		case 'GPIO':
+			console.log('INFO in AppWS: Change GPIO value - data=', dataDict)
+			const number=parseInt(dataDict.number)
+			const val=dataDict.val
+			GPIO.set(number, val)
 		break
 		
 		case 'VAL':
@@ -28,7 +38,7 @@ const onMessage=(typeLabel, dataDict)=>{
 		break
 
 		case 'WIFIINFOS': //refresh the list of networks
-			console.log('INFO in AppWS : WIFIINFOS message received (ask for networks list)')
+			console.log('INFO in AppWS: WIFIINFOS message received (ask for networks list)')
 			WIFI.get_networks((networks)=>{
 				_ssids = networks.map((network)=>{return network.ssid})
 				WIFI.get_status((err, status)=>{
@@ -43,7 +53,7 @@ const onMessage=(typeLabel, dataDict)=>{
 			break;
 
 		case 'WIFICONFIG': //set wificonfig
-			console.log('INFO in AppWS : WIFICONFIG message received - data =', dataDict)
+			console.log('INFO in AppWS: WIFICONFIG message received - data =', dataDict)
 			if (dataDict.network!==false){
 				_wifiConfig.network=dataDict.network
 			}
@@ -59,7 +69,7 @@ const onMessage=(typeLabel, dataDict)=>{
   				password: _wifiConfig.password
 			}, (err, status)=>{
 				if (err){
-					console.log('ERROR in AppWS : cannot connect to the WIFI network - err =', err)
+					console.log('ERROR in AppWS: cannot connect to the WIFI network - err =', err)
 					_isConnected=false
 					send_wifiInfo()
 				} else {
@@ -72,43 +82,23 @@ const onMessage=(typeLabel, dataDict)=>{
 			break
 
 		case 'CMD':
-			console.log('INFO in AppWS : CMD received - CMD =', dataDict)
+			console.log('INFO in AppWS: CMD received - CMD =', dataDict)
 			switch(dataDict){
 				case 'SHUTDOWN':
-				exec('shutdown -h now', (isSuccess, stdOut, stdErr)=>{
-					
-				})
+				EXECSH.exec_cmd('shutdown -h now', false)
 				break
 			}
 			break;
 
 		case 'SHELLCMD':
-			console.log('INFO in AppWS : SHELLCMD received - SHELLCMD =', dataDict)
-			exec(dataDict, (isSuccess, stdOut, stdErr)=>{
-
-				})
+			console.log('INFO in AppWS: SHELLCMD received - SHELLCMD =', dataDict)
+			EXECSH.exec_cmd(dataDict, false)
 			break
 
 		default:
-			console.log('WARNING in AppWS - onMessage : unknow message type ', typeLabel)
+			console.log('WARNING in AppWS - onMessage: unknow message type ', typeLabel)
 		break
 	}
-}
-
-const exec_cmd=(shellCmd, callback)=>{
-	exec(shellCmd, (err, stdout, stderr) => {
-	  if (err) {
-	  	console.log('WARNING in AppWS - exec_cmd() : cannot execute the command ', shellCmd, 'err =', err)
-	  	callback(false, '', '')
-	    return
-	  }
-
-	  // the *entire* stdout and stderr (buffered)
-	  console.log('INFO in AppWS - exec_cmd() : ', shellCmd, 'results:')
-	  console.log(`stdout: ${stdout}`)
-	  console.log(`stderr: ${stderr}`)
-	  callback(true, stdout, stderr)
-	})
 }
 
 const send_wifiInfo=()=>{
@@ -127,8 +117,8 @@ const init=(SETTINGS, ExtWS)=>{
 	WS.init({
 		port: SETTINGS.server.serviceAppWSPort,
 		callbackReady: ()=>{
-			console.log('INFO in AppWs.js - init() : WS server is ready and listenning...')
-			console.log('INFO in AppWS.js - init() : retrieve wifi config')
+			console.log('INFO in AppWs.js - init(): WS server is ready and listenning...')
+			console.log('INFO in AppWS.js - init(): retrieve wifi config')
 			WIFI.load_configSaved((conf, status)=>{
 				if (!conf) return
 				_wifiConfig.network=conf.ssid
@@ -146,7 +136,7 @@ const init=(SETTINGS, ExtWS)=>{
 
 const update_clientsCount=()=>{
 	const nClients=_ExtWS.get_clientsCount()
-	console.log('INFO in AppWS - update_clientsCount() : number of clients connected to ExtWS =', nClients)
+	console.log('INFO in AppWS - update_clientsCount(): number of clients connected to ExtWS =', nClients)
 	WS.send('CLIENTSCOUNT', nClients)
 }
 

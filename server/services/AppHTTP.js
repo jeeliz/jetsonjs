@@ -52,7 +52,8 @@ const init=(SETTINGS)=>{
 	})
 	 
 	server.start(function () {
-	  console.log('INFO in AppHTTP.js - init() : HTTP static server listening to', server.port)
+	  console.log('INFO in AppHTTP.js - init() : HTTP static server listening to', server.port.toString())
+	  console.log('OPEN http://127.0.0.1:'+server.port.toString()+' in your web browser')
 	})
 	 
 	/*server.on('request', function (req, res) {
