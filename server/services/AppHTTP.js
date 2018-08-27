@@ -15,11 +15,19 @@ const copy_dir=(src, dst)=>{
 	    exclude: "readme*" // An exclude filter (either a regexp or a function)
 	})
 }
+const create_dir=(dir)=>{
+	if (!Fs.existsSync(dir)){
+	    Fs.mkdirSync(dir);
+	}
+}
 
 const init=(SETTINGS)=>{
 	const rootPath='../'
 	const fullAppPath=rootPath+SETTINGS.server.serviceAppHTTPPath
 	const fullAppAutoPath=fullAppPath+'auto/'
+
+	//create the served auto path if not exists
+	create_dir(fullAppAutoPath)
 
 	//copy settings.js to the served path
 	copy_file(rootPath+'settings.js', fullAppAutoPath+'settings.js')
