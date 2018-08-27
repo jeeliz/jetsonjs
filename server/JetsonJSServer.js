@@ -1,4 +1,5 @@
-const  SETTINGS = require('../settings')
+const SETTINGS = require('../settings')
+const EXECSH = require('./wrappers/ExecSh')
 
 //HTTP Services:
 const ServiceAppHTTP = require('./services/AppHTTP')
@@ -19,16 +20,5 @@ ServiceAppWS.init(SETTINGS, ServiceExtWS)
 //launch the client side with electron if required in the settings:
 if (SETTINGS.client.isAutoStartElectron){
 	console.log('INFO in JetsonJSServer.js: start electron client...')
-	const { exec } = require('child_process')
-
-	exec('../client/electron/startElectronClient.sh', (err, stdout, stderr) => {
-	  if (err) {
-	    console.log('ERROR in JetsonJSServer.js: cannot launch electron client. Err=', err)
-	    return
-	  }
-
-	  // the *entire* stdout and stderr (buffered)
-	  console.log(`INFO in JetsonJSServer.js: stdout= ${stdout}`)
-	  console.log(`INFO in JetsonJEServer.js: stderr=: ${stderr}`)
-	})
+	setTimeout(EXECSH.exec_cmd.bind(null, '../client/electron/startElectronClient.sh', false), 1000)
 }

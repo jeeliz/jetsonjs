@@ -250,6 +250,9 @@ JETSONJSCLIENT.send_value({
 
 `JETSONJSCLIENT.close()`: close the Electron window. Usefull for debug
 
+`JETSONJSCLIENT.open_electronDevTools()`: open Electron development tools (for debugging purpose)
+
+`JETSONJSCLIENT.is_inElectron()`: returns whether the script runs into electron or not
 
 
 ### Final webapp

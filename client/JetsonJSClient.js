@@ -18,6 +18,7 @@
 
 "use strict";
 
+
 const JETSONJSCLIENT=(function(){
 	//privates vars :
 	let _socket
@@ -263,7 +264,7 @@ const JETSONJSCLIENT=(function(){
 
 	//BEGIN VIRTUAL KEYBOARD
 	function init_keyboard(domClassTargets){
-		if (!$ || !$.keyboard){
+		if (typeof($)==='undefined' || typeof($.keyboard)==='undefined'){
 			console.log('WARNING in JetsonJSClient.js - init_keyboard() : no keyboard script included');
 			return;
 		}
@@ -594,31 +595,39 @@ const JETSONJSCLIENT=(function(){
 	//public methods :
 	const that={
 		'init': function(spec){ //entry point
-			_state=_states.loading
-			_callbackConnect=spec.callbackConnect
-			connect_toWsServer(spec.callbackReady)
+			_state=_states.loading;
+			_callbackConnect=spec.callbackConnect;
+			connect_toWsServer(spec.callbackReady);
 
 			if (spec.keyboardTargetsClass){
-				init_keyboard(spec.keyboardTargetsClass);
+				$.when(
+				    $.getScript( "auto/libs/MottieKeyboard/js/jquery.keyboard.min.js" ),
+				    $.getScript( "auto/libs/MottieKeyboard/js/jquery.keyboard.extension-all.min.js" ),
+				    $.Deferred(function( deferred ){
+				        $( deferred.resolve );
+				    })
+				).done(function(){
+					init_keyboard(spec.keyboardTargetsClass)
+				}) //end success keyboard.min.js
 			}
 
 			if (spec.wifiConfigIds){
 				console.log('INFO in JetsonJSClient.js - init() : a Wifi config is provided');
 				Object.keys(_wifiConfig.domElements).forEach(function(domKey){
-					var domId=spec.wifiConfigIds[domKey]
-					var domElt=document.getElementById(domId)
+					var domId=spec.wifiConfigIds[domKey];
+					var domElt=document.getElementById(domId);
 					if (!domElt){
-						console.log('WARNING in JetsonJSClient.js - init() : cannot found an input element which id =', domId, 'in the DOM')
+						console.log('WARNING in JetsonJSClient.js - init() : cannot found an input element which id =', domId, 'in the DOM');
 						return
 					}
-					_wifiConfig.domElements[domKey]=domElt
+					_wifiConfig.domElements[domKey]=domElt;
 				});
 
 				if (_wifiConfig.domElements.buttonValidate){
-					_wifiConfig.domElements.buttonValidate.addEventListener('click', update_wifiConfig, false)
+					_wifiConfig.domElements.buttonValidate.addEventListener('click', update_wifiConfig, false);
 				}
 				if (_wifiConfig.domElements.buttonRefresh){
-					_wifiConfig.domElements.buttonRefresh.addEventListener('click', update_wifiNetworksList, false)
+					_wifiConfig.domElements.buttonRefresh.addEventListener('click', update_wifiNetworksList, false);
 				}
 
 				setTimeout(that['fetch_wifi'], 100);
@@ -630,7 +639,7 @@ const JETSONJSCLIENT=(function(){
 				return
 			}
 			if (!send('VAL', dict)){
-				console.log('ERROR in JetsonJSClient.js - send_value : the websocket is not in OPEN state. _socket.readyState =', _socket.readyState)
+				console.log('ERROR in JetsonJSClient.js - send_value : the websocket is not in OPEN state. _socket.readyState =', _socket.readyState);
 				_state=_states.error
 				reloadPageDelayed()
 			}
@@ -644,7 +653,7 @@ const JETSONJSCLIENT=(function(){
 		},
 
 		'shutdown': function(){
-			console.log('INFO in JetsonJSClient.js: shutdown() launched. THE DEVICE WILL SHUTDOWN BRO!!!')
+			console.log('INFO in JetsonJSClient.js: shutdown() launched. THE DEVICE WILL SHUTDOWN BRO!!!');
 			send('CMD', 'SHUTDOWN')
 		},
 
@@ -657,7 +666,7 @@ const JETSONJSCLIENT=(function(){
 				window.close();
 				window.top.close();
 			} catch(e){
-				console.log('WARNING in JetsonJSClient.js - close(): cannot simply close the window')
+				console.log('WARNING in JetsonJSClient.js - close(): cannot simply close the window');
 			}
 
 			try {
@@ -665,7 +674,17 @@ const JETSONJSCLIENT=(function(){
 				var electronWin = electronRemote.getCurrentWindow();
 				electronWin.close();
 			} catch(e){
-				console.log('WARNING in JetsonJSClient.js - close(): Electron is not here or the app was not launched with Electron')
+				console.log('WARNING in JetsonJSClient.js - close(): Electron is not here or the app was not launched with Electron');
+			}
+		},
+
+		'open_electronDevTools': function(){
+			try{
+				const electronRemote = require('electron').remote;
+				var electronWin = electronRemote.getCurrentWindow();
+				electronWin.toggleDevTools();
+			} catch(e){
+				console.log('WARNING in JetsonJSClient.js - open_electronDevTools(): Cannot open devTools. Maybe not executed through Electron?');
 			}
 		},
 
@@ -674,6 +693,14 @@ const JETSONJSCLIENT=(function(){
 				'number': nb,
 				'val': val
 			})
+		},
+
+		'is_inElectron': function(){
+			try{
+				return (window && window.process && window.process.type)?true:false;
+			} catch(e){
+				return false;
+			}
 		}
 
 	} //end that

@@ -1,3 +1,5 @@
+const { exec } = require('child_process')
+
 const exec_cmd=(shellCmd, callback)=>{
 	exec(shellCmd, (err, stdout, stderr) => {
 	  if (err) {

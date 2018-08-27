@@ -1,5 +1,8 @@
 {
-  "name"    : "jetsonjs",
-  "version" : "1.0.0",
-  "main"    : "mainElectron.js"
+  "name": "jetsonjs",
+  "version": "1.0.0",
+  "main": "mainElectron.js",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
 }

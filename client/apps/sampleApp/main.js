@@ -14,9 +14,15 @@ function startApp(){
 	setInterval(iterate, 10)
 }
 
+function updateGPIO(){
+	const val=parseInt(document.getElementById('GPIOValue').value);
+	const number=parseInt(document.getElementById('GPIONumber').value);
+	JETSONJSCLIENT.set_GPIO(number, val);
+}
+
 function main(){ //entry point, called by body.onload()
 	JETSONJSCLIENT.init({
-		//keyboardTargetsClass: 'keyboard',
+		keyboardTargetsClass: 'keyboard',
 
 		wifiConfigIds:{
 			divWidget: 'wifiConfig',
@@ -40,4 +46,3 @@ function main(){ //entry point, called by body.onload()
 		}
 	})
 } 
-

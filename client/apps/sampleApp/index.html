@@ -10,12 +10,18 @@
 	<!-- YOU SHOULD INCLUDE JETSONJSCLIENT -->
 	<script src='auto/JetsonJSClient.js'></script>
 
-	<!-- INCLUDE VIRTUAL KEYBOARD SCRIPTS AND STYLE -->
+	<!-- INCLUDE JQUERY -->
+	<script>
+		if (JETSONJSCLIENT.is_inElectron()){
+			window.$ = window.jQuery = require('jquery');
+		}
+	</script>
 	<script src='auto/libs/jquery/jquery-3.3.1.min.js'></script>
+
+
+	<!-- INCLUDE VIRTUAL KEYBOARD STYLE -->
 	<!-- <script src='auto/libs/jquery-ui/jquery-ui.min.js'></script> -->
 	<link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min_flat.css' />
-	<script src='auto/libs/MottieKeyboard/js/jquery.keyboard.min.js'></script>
-	<script src='auto/libs/MottieKeyboard/js/jquery.keyboard.extension-all.min.js'></script>
 	<link rel='stylesheet' type='text/css' href='auto/libs/MottieKeyboard/css/keyboard-dark.min.css' />
 
 	<!-- MAIN SCRIPT -->
@@ -42,6 +48,16 @@
 	<button onclick="if(confirm('Do u really want to shutdown the Jetson ???')){JETSONJSCLIENT.shutdown()}">SHUTDOWN THE JETSON</button><br/><br/>
 
 	<button onclick="JETSONJSCLIENT.close()">CLOSE ELECTRON WIN</button><br/><br/>
+
+	<button onclick="JETSONJSCLIENT.open_electronDevTools();">OPEN DEVTOOLS</button><br/><br/>
+
+
+	CHANGE THE VALUE OF A GPIO - number: <input id='GPIONumber' value='9' class='keyboard' style='width: 30px'/>, value: 
+	<select id='GPIOValue' selectindex='0' style='width: 40px'>
+		<option value='1'>1</option>
+		<option value='0'>0</option>
+	</select>&nbsp;&nbsp;<button onclick='updateGPIO()' style='width: 40px'>OK</button><br/><br/>
+
 
 
 	<div class='wifiConfig' id='wifiConfig'>
