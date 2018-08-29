@@ -1,4 +1,4 @@
-.wifiConfig input,select,button {
+.wifiConfig input,button {
 	color: white; background-color: #444;
 	border: 1px solid white;
 	background-image: none;
@@ -6,6 +6,9 @@
 }
 .wifiConfig select,button {
 	cursor: pointer;
+}
+.wifiConfig .ui-selectmenu-button {
+	font-size: 10px!important;
 }
 .wifiConfig {
 	background-color: black;

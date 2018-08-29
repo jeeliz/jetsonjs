@@ -11,7 +11,10 @@
 	spec :
 	   callbackReady: function called when the JetsonJSClient is ready,
 	   callbackConnect: function launched with true if there is at least 1 client connected at the final app, 0 otherwise
+	   
 	   keyboardTargetsClass: class of the <input> where the virtual keyboard should be displayed
+	   keyboardAttachId: id of the area where the virtual keyboard should be attached
+
 	   wifiConfigIds: list of DOM ids to bind the WIFI config widget. See sampleApp for more details
 
 */
@@ -64,7 +67,8 @@ const JETSONJSCLIENT=(function(){
 		disconnected: 0
 	}
 	let _keyboard={
-		isInitialized: false
+		isInitialized: false,
+		jqAttach: null
 	};
 
 	//private methods :
@@ -263,7 +267,7 @@ const JETSONJSCLIENT=(function(){
 	//ENDWIFI CONFIGURATION
 
 	//BEGIN VIRTUAL KEYBOARD
-	function init_keyboard(domClassTargets){
+	function init_keyboard(domClassTargets, attachId){
 		if (typeof($)==='undefined' || typeof($.keyboard)==='undefined'){
 			console.log('WARNING in JetsonJSClient.js - init_keyboard() : no keyboard script included');
 			return;
@@ -275,6 +279,8 @@ const JETSONJSCLIENT=(function(){
 			const domElement=jqTargets[jqElementIndex];
 			bind_keyboardToInput($(domElement));
 		});
+
+		_keyboard.jqAttach=(attachId)?$('#'+attachId):null;
 		_keyboard.isInitialized=true;
 	}
 
@@ -305,12 +311,12 @@ const JETSONJSCLIENT=(function(){
 		      position: {
 		        // null = attach to input/textarea;
 		        // use $(sel) to attach elsewhere
-		        of: null,
+		        of: $('#virtualKeyboard'), //null,
 		        my: 'center top',
 		        at: 'center top',
 		        // used when "usePreview" is false
-		        at2: 'center bottom',
-		        collision: 'fit'
+		        //at2: 'center bottom'
+		        //collision: 'fit'
 		      },
 
 		      // allow jQuery position utility to reposition the keyboard on
@@ -595,7 +601,15 @@ const JETSONJSCLIENT=(function(){
 
 	function fix_selectBoxElectron(){
 		//if (!$) return;
-		//$('select').not('.disabled').formSelect();
+		$('select').each(function(ind, domElt){
+			const jqSelect=$(domElt);
+			jqSelect.selectmenu();
+			
+			//window.plapp=jqSelect;
+			setTimeout(jqSelect.selectmenu.bind(jqSelect, 'refresh'), 2000);
+		});
+
+
 	}
 
 	//public methods :
@@ -613,7 +627,7 @@ const JETSONJSCLIENT=(function(){
 				        $( deferred.resolve );
 				    })
 				).done(function(){
-					init_keyboard(spec.keyboardTargetsClass)
+					init_keyboard(spec.keyboardTargetsClass, spec.keyboardAttachId);
 				}) //end success keyboard.min.js
 			}
 
@@ -711,9 +725,11 @@ const JETSONJSCLIENT=(function(){
 
 		'fix_electron': function(){
 			if (!that['is_inElectron']()){
+				//setTimeout(fix_selectBoxElectron, 500);
 				return;
 			}
 			window.$ = window.jQuery = require('jquery');
+			//require('jquery-ui'); -> not working cf https://stackoverflow.com/questions/34485506/jquery-ui-and-electron
 			$(document).ready(fix_selectBoxElectron);
 		}
 

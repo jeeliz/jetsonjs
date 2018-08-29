@@ -10,26 +10,29 @@
 	<!-- YOU SHOULD INCLUDE JETSONJSCLIENT -->
 	<script src='auto/JetsonJSClient.js'></script>
 
+
 	<!-- INCLUDE JQUERY -->
 	<script>
 		JETSONJSCLIENT.fix_electron();
 	</script>
 	<script src='auto/libs/jquery/jquery-3.3.1.min.js'></script>
 
+	<!-- INCLUDE JQUERY UI (required for virtual keyboard and <select> fix) -->
+	<script src='auto/libs/jquery-ui/jquery-ui.min.js'></script>
+	<!-- <link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min_flat.css' /> -->
+	<link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min.css' />
+	<link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.theme.min.css' />
+
 
 	<!-- INCLUDE VIRTUAL KEYBOARD STYLE -->
-	<!-- <script src='auto/libs/jquery-ui/jquery-ui.min.js'></script> -->
-	<link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min_flat.css' />
 	<link rel='stylesheet' type='text/css' href='auto/libs/MottieKeyboard/css/keyboard-dark.min.css' />
+	<link rel='stylesheet' type='text/css' href='auto/libs/custom/keyboard.css' />
 
 	<!-- MAIN SCRIPT -->
 	<script src='main.js'></script>
 
 	<link rel='stylesheet' type='text/css' href='wifiWidget.css' />
-	<link rel='stylesheet' type='text/css' href='auto/libs/custom/keyboard.css' />
 
-	<style type='text/css'>
-	</style>
 </head> 
 
 <body onload='main()'>
@@ -71,5 +74,9 @@
 		<button id='wifiConfig_refresh'>REFRESH NETWORKS</button>
 	</div>
 
+
+	<div id='virtualKeyboard'>
+
+	</div>
 </body>
 </html>
