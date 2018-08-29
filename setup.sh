@@ -30,5 +30,11 @@ sudo apt-get install -y nodejs
 sudo npm install npm --global
 sudo npm install -g electron --unsafe-perm=true --allow-root
 #
+echo "INSTALL NODE PACKAGES"
+cd ~/jetsonjs/server
+npm install
+cd ../client/electron
+npm install
+#
 echo "REMOVE .XINIT"
 mv ~/.xinit ~/.xinit.bak

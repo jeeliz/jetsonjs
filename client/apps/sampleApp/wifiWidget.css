@@ -1,7 +1,7 @@
 .wifiConfig input,select,button {
 	color: white; background-color: #444;
 	border: 1px solid white;
-	background-image: none!important;
+	background-image: none;
 	width: 200px;
 }
 .wifiConfig select,button {

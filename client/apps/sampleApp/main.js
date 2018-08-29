@@ -14,8 +14,7 @@ function startApp(){
 	setInterval(iterate, 10)
 }
 
-function updateGPIO(){
-	const val=parseInt(document.getElementById('GPIOValue').value);
+function updateGPIO(val){
 	const number=parseInt(document.getElementById('GPIONumber').value);
 	JETSONJSCLIENT.set_GPIO(number, val);
 }

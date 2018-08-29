@@ -309,7 +309,8 @@ const JETSONJSCLIENT=(function(){
 		        my: 'center top',
 		        at: 'center top',
 		        // used when "usePreview" is false
-		        at2: 'center bottom'
+		        at2: 'center bottom',
+		        collision: 'fit'
 		      },
 
 		      // allow jQuery position utility to reposition the keyboard on
@@ -318,7 +319,7 @@ const JETSONJSCLIENT=(function(){
 
 		      // true: preview added above keyboard;
 		      // false: original input/textarea used
-		      usePreview: false,//true,
+		      usePreview: true,
 
 		      // if true, the keyboard will always be visible
 		      alwaysOpen: false,

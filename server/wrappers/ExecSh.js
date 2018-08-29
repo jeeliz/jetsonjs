@@ -1,6 +1,4 @@
 const { exec } = require('child_process')
-const sudo = require('sudo-js')
-sudo.setPassword('')
 
 const exec_cmd=(shellCmd, callback)=>{
 	exec(shellCmd, (err, stdout, stderr) => {
@@ -23,13 +21,16 @@ const exec_cmd=(shellCmd, callback)=>{
 } 
 
 const sudoExec_cmd=(shellCmd, callback) =>{
-    sudo.exec(shellCmd.split(' '), (err, pid, result) => {
-        console.log('INFO in ExecSh - sudoExec_cmd(): ',result)
-	if (callback){
-            callback()
-	}
-    })
+   exec_cmd('/usr/bin/sudo '+shellCmd, callback)
 }
+
+//TEST sudoExec_cmd:
+//you should have run sudo visudo and add this line: 
+//<yourUser> ALL=(ALL) NOPASSWD: /usr/bin/whoami
+/*console.log('TEST: ExecSh - sudoExec_cmd():')
+sudoExec_cmd('sudo whoami', false)
+//*/
+
 
 module.exports={
 	exec_cmd: exec_cmd,
