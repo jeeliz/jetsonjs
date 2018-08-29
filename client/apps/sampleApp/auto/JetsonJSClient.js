@@ -594,8 +594,8 @@ const JETSONJSCLIENT=(function(){
 	//END VIRTUAL KEYBOARD
 
 	function fix_selectBoxElectron(){
-		if (!$) return;
-		$('select').not('.disabled').formSelect();
+		//if (!$) return;
+		//$('select').not('.disabled').formSelect();
 	}
 
 	//public methods :
@@ -710,6 +710,9 @@ const JETSONJSCLIENT=(function(){
 		},
 
 		'fix_electron': function(){
+			if (!that['is_inElectron']()){
+				return;
+			}
 			window.$ = window.jQuery = require('jquery');
 			$(document).ready(fix_selectBoxElectron);
 		}
