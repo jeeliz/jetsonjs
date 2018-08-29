@@ -593,6 +593,11 @@ const JETSONJSCLIENT=(function(){
 
 	//END VIRTUAL KEYBOARD
 
+	function fix_selectBoxElectron(){
+		if (!$) return;
+		$('select').not('.disabled').formSelect();
+	}
+
 	//public methods :
 	const that={
 		'init': function(spec){ //entry point
@@ -702,6 +707,11 @@ const JETSONJSCLIENT=(function(){
 			} catch(e){
 				return false;
 			}
+		},
+
+		'fix_electron': function(){
+			window.$ = window.jQuery = require('jquery');
+			$(document).ready(fix_selectBoxElectron);
 		}
 
 	} //end that
