@@ -22,6 +22,7 @@ function updateGPIO(val){
 function main(){ //entry point, called by body.onload()
 	JETSONJSCLIENT.init({
 		keyboardTargetsClass: 'keyboard',
+		keyboardAttachId: 'virtualKeyboard',
 
 		wifiConfigIds:{
 			divWidget: 'wifiConfig',

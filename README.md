@@ -227,6 +227,7 @@ JETSONJSCLIENT.init({
   keyboardTargetsClass: //string, class of the <input> where a virtual keyboard should be displayed
      // see  /client/apps/sampleApp/main.js to get an example
      // of integration of the virtual keyboard
+  keyboardAttachId: //string, id of the element where the keyboard will be attached
 })
 ```
 
