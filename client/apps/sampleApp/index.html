@@ -13,7 +13,8 @@
 	<!-- INCLUDE JQUERY -->
 	<script>
 		if (JETSONJSCLIENT.is_inElectron()){
-			window.$ = window.jQuery = require('jquery');
+			//window.$ = window.jQuery = require('jquery');
+			JETSONJSCLIENT.fix_electron();
 		}
 	</script>
 	<script src='auto/libs/jquery/jquery-3.3.1.min.js'></script>

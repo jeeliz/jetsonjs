@@ -18,7 +18,15 @@ app.on('window-all-closed', function() {
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({fullscreen: true, frame:false});
+  mainWindow = new BrowserWindow({fullscreen: true,
+	frame:false,
+	minimizable:false,
+	maximizable:false,
+	alwaysOnTop:true,
+	skipTaskBar:true,
+	kiosk:true,
+	title:'JetsonJS client',
+	disableAutoHideCursor:true});
 
   // and load the index.html of the app.
   //mainWindow.loadURL('file://' + __dirname + '/index.html');
