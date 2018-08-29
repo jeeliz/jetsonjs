@@ -9,7 +9,8 @@ const SETTINGS={
 		serviceTestHTTPPort: 3000, //if 0, disable this service
 		serviceAppHTTPPath: '/client/apps/sampleApp/',
 		serviceAppWSPort: 5000,    // ws://127.0.0.1
-		serviceExtWSPort: 8888       // ws://<extIp>
+		serviceExtWSPort: 8888,       // ws://<extIp>
+		isInvertGPIO: true
 	}
 } 
 
