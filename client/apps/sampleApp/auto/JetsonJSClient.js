@@ -725,7 +725,7 @@ const JETSONJSCLIENT=(function(){
 
 		'fix_electron': function(){
 			if (!that['is_inElectron']()){
-				setTimeout(fix_selectBoxElectron, 500);
+				//setTimeout(fix_selectBoxElectron, 500);
 				return;
 			}
 			window.$ = window.jQuery = require('jquery');
