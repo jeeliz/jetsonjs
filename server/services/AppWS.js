@@ -85,7 +85,7 @@ const onMessage=(typeLabel, dataDict)=>{
 			console.log('INFO in AppWS: CMD received - CMD =', dataDict)
 			switch(dataDict){
 				case 'SHUTDOWN':
-				EXECSH.exec_cmd('shutdown -h now', false)
+				EXECSH.sudoExec_cmd('shutdown -h now', false)
 				break
 			}
 			break;
