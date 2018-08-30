@@ -10,12 +10,14 @@ Embedded systems with JavaScript/WebGL.
 ## Table of contents
 
 * [Presentation](#presentation)
+* [Features](#features)
 * [Architecture](#architecture)
 * [Setup](#setup)
   * [Hardware hookup](#hardware-hookup)
   * [Wifi connection](#wifi-connection)
   * [Setup packages](#setup-packages)
   * [Security](#security)
+  * [Add sudo rights](#add-sudo-rights)
 * [Specifications](#specifications)
   * [JetsonJSClient.js](#jetsonjsclientjs)
   * [Final webapp](#final-webapp)
@@ -30,21 +32,57 @@ Embedded systems with JavaScript/WebGL.
 
 The [Jetson TX2](https://developer.nvidia.com/embedded/buy/jetson-tx2) is a SoM (System on Module) with a powerful GPU. It has no competitor on the market yet. It is mainly used for deep learning or image processing purposes, using Nvidia Cuda API or OpenCL.
 
-We want to embed an application running with JavaScript/WebGL on a Nvidia Jetson. The application requires a good GPU computing power, that's why we use the Jetson instead of a cheaper Rasperry Pi. It is an application using a [Jeeliz library](https://github.com/jeeliz). For instance it can be a [pupillometry application](https://github.com/jeeliz/jeelizPupillometry) to build a standalone pupillometer.
+We want to embed an application running with JavaScript/WebGL on a Nvidia Jetson. The application requires a good GPU computing power, that's why we use the Jetson instead of a cheaper Rasperry Pi or equivalent. It is an application using a [Jeeliz library](https://github.com/jeeliz). For instance it can be a [pupillometry application](https://github.com/jeeliz/jeelizPupillometry) to build a standalone pupillometer.
 
 With this project, we can setup the Jetson to run the application as an embedded application and possibly stream output data through websockets on a Wifi network. So we can transform a web application into an embedded application.
+
+We do not use at all proprietary solutions like *Cuda* or *Jetpack*.
 
 <p align="center">
 <img src="images/archi.png?raw=true"/>
 </p>
 
+
+## Features
+Mandatory key features:
+* Server part running with Node.JS and providing:
+  * A static HTTP service to host the client part
+  * A dynamic Websocket service to communicate with the client part
+* A client part served by the server part in a web context (either with a full web browser like *Chromium* or *Firefox* or ideally *Electron*) and doing a GPU intensive task using WebGL API.
+
+
+Optional features:
+* The client part can ask the server part to:
+  * control the Jetson GPIOs
+  * shutdown the Jetson
+  * execute a specific bash command
+  * connect to a wifi network
+  * stream data to the server part
+* The client part can be displayed on a touchscreen
+* The client part can show these widgets:
+  * a wifi configuration
+  * a virtual keyboard (displayed on the touchscreen)
+* The server part can:
+  * stream the data from the jetson client to an external websocket service
+  * host a test interface through HTTP to view the data streamed by the jetson client
+
+
 ## Architecture
 
 * `/client`: Client part of the application (running in the Jetson browser)
-  * `/JetsonJSClient.js`: Client side API,
+  * `/JetsonJSClient.js`: Client side API
   * `/apps/`: Jetson web applications (`/apps/sampleApp` is the example application) which will run into the Jetson browser
+  * `/electron/`: Electron wrapper and main script
+  * `/libs/`: various JavaScript libraries, compied into `<appPath>/auto` and served with static HTTP server later
+* `/debug/`: bash scripts, useful for debugging:
+  * `/startChromium.sh`: start chromium browser on the Jetson
+  * `/stopAll.sh`: stop `Xorg` and `node` on the Jetson
 * `/server`: NodeJS server part (running on the Jetson)
-  * `/start.sh`: bash script to launch the server part
+  * `/JetsonJSServer.js`: main server script, launched with *NodeJS* by `startServer.sh`
+  * `/startServer.sh`: bash script to launch the server part
+  * `/services/`: one script per network service (either through HTTP, or websockets)
+  * `/wrappers/`: various scripts to run shell commands, to play with GPIOs, to config wifi...
+  * `/wifiConfigs/`: save wifi configurations here
 * `/test/index.html`: test the final web application and the connection with the Jetson. Should be launched in your browser (NOT the Jetson browser)
 * `/settings.js`: configuration file, both for client and server side
 * `/setup.sh`: the setup bash script (see [the setup section](#setup))
