@@ -1,8 +1,10 @@
 const Fs = require('fs')
-const StaticServer = require('static-server') //see https://www.npmjs.com/package/static-server for doc
-const Wrench = require('wrench')
+const StaticServer = require('node-static');//doc here: https://www.npmjs.com/package/node-static 
+const Http = require('http')
 
-const copy_file=(src, dst)=>{
+//const Wrench = require('wrench')
+
+/*const copy_file=(src, dst)=>{
 	Fs.createReadStream(src).pipe(Fs.createWriteStream(dst))
 }
 const copy_dir=(src, dst)=>{
@@ -19,26 +21,28 @@ const create_dir=(dir)=>{
 	if (!Fs.existsSync(dir)){
 	    Fs.mkdirSync(dir);
 	}
-}
+}*/
 
 const init=(SETTINGS)=>{
 	const rootPath='../'
 	const fullAppPath=rootPath+SETTINGS.server.serviceAppHTTPPath
-	const fullAppAutoPath=fullAppPath+'auto/'
+	//const fullAppAutoPath=fullAppPath+'auto/'
 
 	//create the served auto path if not exists
-	create_dir(fullAppAutoPath)
+	//create_dir(fullAppAutoPath)
 
 	//copy settings.js to the served path
-	copy_file(rootPath+'settings.js', fullAppAutoPath+'settings.js')
+	//copy_file(rootPath+'settings.js', fullAppAutoPath+'settings.js')
 
 	//copy JetsonJSclient to the served path
-	copy_file(rootPath+'client/JetsonJSClient.js', fullAppAutoPath+'JetsonJSClient.js')
-	copy_dir(rootPath+'client/libs', fullAppAutoPath+'/libs')
+	//copy_file(rootPath+'client/JetsonJSClient.js', fullAppAutoPath+'JetsonJSClient.js')
+	//copy_dir(rootPath+'client/libs', fullAppAutoPath+'/libs')
+
+
 
 
 	//start the server :
-	const server = new StaticServer({
+	/*const server = new StaticServer({
 	  rootPath: fullAppPath,            // required, the root of the server file tree
 	  port: SETTINGS.server.serviceAppHTTPPort,               // required, the port to listen
 	  name: 'App static http',   // optional, will set "X-Powered-by" HTTP header
@@ -54,22 +58,52 @@ const init=(SETTINGS)=>{
 	server.start(function () {
 	  console.log('INFO in AppHTTP.js - init() : HTTP static server listening to', server.port.toString())
 	  console.log('OPEN http://127.0.0.1:'+server.port.toString()+' in your web browser')
-	})
-	 
-	/*server.on('request', function (req, res) {
-	  // req.path is the URL resource (file name) from server.rootPath
-	  // req.elapsedTime returns a string of the request's elapsed time
-	})
-	 
-	server.on('response', function (req, res, err, file, stat) {
-	  // res.status is the response status sent to the client
-	  // res.headers are the headers sent
-	  // err is any error message thrown
-	  // file the file being served (may be null)
-	  // stat the stat of the file being served (is null if file is null)
-	 
-	  // NOTE: the response has already been sent at this point
 	})*/
+	 
+	const serveApp = new StaticServer.Server(fullAppPath)
+	const serveAutoRoot = new StaticServer.Server(rootPath)
+	const serveAutoClient = new StaticServer.Server(rootPath+'client')
+
+
+	Http.createServer(function (request, response) {
+	    request.addListener('end', function () {
+	        //
+	        // Serve files!
+	        //
+	        
+	        //console.log(request.url);
+	        const requestSplitted=request.url.split('/')
+	        requestSplitted.shift()
+	        const baseDir=requestSplitted.shift()
+
+
+	        //ROUTING:
+	        if(baseDir==='auto'){
+	        	request.url='/'+requestSplitted.join('/')
+	        	const a=requestSplitted.shift()
+	        	const b=requestSplitted.shift()
+
+	        	//console.log('a=', a, 'b=',b, 'request.url=', request.url)
+
+	        	if (a==='JetsonJSClient.js'){ //works (http://127.0.0.1:8080/auto/JetsonJSClient.js)
+	        		serveAutoClient.serve(request, response)
+	        	} else if(a==='settings.js'){ //works (http://127.0.0.1:8080/auto/settings.js)
+	        		serveAutoRoot.serve(request, response)
+	        	} else if(a==='libs'){ //works (http://127.0.0.1:8080/auto/libs/jquery/jquery-3.3.1.min.js)
+	        		serveAutoClient.serve(request, response)
+	        	} else {
+	        		serveApp.serve(request, response)
+	        	}
+	        	
+	        } else {
+	        	serveApp.serve(request, response)
+	        }
+	    }).resume()
+
+	}).listen(SETTINGS.server.serviceAppHTTPPort);
+
+	console.log('INFO in AppHTTP.js - init() : HTTP static server listening to'+SETTINGS.server.serviceAppHTTPPort.toString())
+	console.log('OPEN http://127.0.0.1:'+SETTINGS.server.serviceAppHTTPPort.toString()+' in your web browser')
 
 	return true
 } //end init
