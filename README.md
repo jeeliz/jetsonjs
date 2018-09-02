@@ -250,7 +250,7 @@ Save and exit.
 <script src='auto/settings.js'></script>
 <script src='auto/JetsonJSClient.js'></script>
 ```
-You can take a look at [/client/apps/sampleApp/](/client/apps/sampleApp/) to get an example. These scripts are prefixed by `auto/` because they are automatically copied into `<app path>/auto/` when the nodeJS server is launched. After the loading of the page you should initialize `JETSONJSCLIENT` with :
+You can take a look at [/client/apps/sampleApp/](/client/apps/sampleApp/) to get an example. These scripts are prefixed by `auto/` because they are automatically hosted as `<app path>/auto/` when the nodeJS server is launched. After the loading of the page you should initialize `JETSONJSCLIENT` with :
 
 ```javascript
 JETSONJSCLIENT.init({
