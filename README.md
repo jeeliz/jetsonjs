@@ -236,6 +236,7 @@ and add:
 ```
 nvidia ALL=(ALL) NOPASSWD: /home/nvidia/jetsonjs/server/wrappers/
 nvidia ALL=(ALL) NOPASSWD: /sbin/shutdown
+nvidia ALL=(ALL) NOPASSWD: /bin/mount
 ```
 Save and exit.
 
