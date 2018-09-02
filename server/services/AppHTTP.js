@@ -26,44 +26,18 @@ const create_dir=(dir)=>{
 const init=(SETTINGS)=>{
 	const rootPath='../'
 	const fullAppPath=rootPath+SETTINGS.server.serviceAppHTTPPath
-	//const fullAppAutoPath=fullAppPath+'auto/'
 
-	//create the served auto path if not exists
-	//create_dir(fullAppAutoPath)
-
-	//copy settings.js to the served path
-	//copy_file(rootPath+'settings.js', fullAppAutoPath+'settings.js')
-
-	//copy JetsonJSclient to the served path
-	//copy_file(rootPath+'client/JetsonJSClient.js', fullAppAutoPath+'JetsonJSClient.js')
-	//copy_dir(rootPath+'client/libs', fullAppAutoPath+'/libs')
-
-
-
-
-	//start the server :
-	/*const server = new StaticServer({
-	  rootPath: fullAppPath,            // required, the root of the server file tree
-	  port: SETTINGS.server.serviceAppHTTPPort,               // required, the port to listen
-	  name: 'App static http',   // optional, will set "X-Powered-by" HTTP header
-	  host: '127.0.0.1',       // optional, defaults to any interface
-	  cors: '*',                // optional, defaults to undefined
-	  //followSymlink: false,      // optional, defaults to a 404 error
-	  templates: {
-	   // index: 'foo.html',      // optional, defaults to 'index.html'
-	    notFound: '404.html'    // optional, defaults to undefined
-	  }
-	})
 	 
-	server.start(function () {
-	  console.log('INFO in AppHTTP.js - init() : HTTP static server listening to', server.port.toString())
-	  console.log('OPEN http://127.0.0.1:'+server.port.toString()+' in your web browser')
-	})*/
-	 
+	const settingsFileParsed=SETTINGS._settingsFile.split('/') //../settings by default
+	const settingsURL='/'+(settingsFileParsed.pop())+'.js'
+	const settingsRootPath=settingsFileParsed.join('/')
+
+
 	const serveApp = new StaticServer.Server(fullAppPath)
-	const serveAutoRoot = new StaticServer.Server(rootPath)
+	const serveAutoSettings = new StaticServer.Server(settingsRootPath)
 	const serveAutoClient = new StaticServer.Server(rootPath+'client')
 
+	console.log('INFO in AppHTTP: serve app from', fullAppPath)
 
 	Http.createServer(function (request, response) {
 	    request.addListener('end', function () {
@@ -88,7 +62,8 @@ const init=(SETTINGS)=>{
 	        	if (a==='JetsonJSClient.js'){ //works (http://127.0.0.1:8080/auto/JetsonJSClient.js)
 	        		serveAutoClient.serve(request, response)
 	        	} else if(a==='settings.js'){ //works (http://127.0.0.1:8080/auto/settings.js)
-	        		serveAutoRoot.serve(request, response)
+	        		request.url=settingsURL
+	        		serveAutoSettings.serve(request, response)
 	        	} else if(a==='libs'){ //works (http://127.0.0.1:8080/auto/libs/jquery/jquery-3.3.1.min.js)
 	        		serveAutoClient.serve(request, response)
 	        	} else {

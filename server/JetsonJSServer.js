@@ -1,4 +1,20 @@
-const SETTINGS = require('../settings')
+//get the settings files:
+let _settingsFile='../settings'
+if (process.argv && process.argv.length && process.argv.length>=2){
+	_settingsFile=process.argv[2].split('.js').shift() //remove .js extension if necessary
+	if (_settingsFile[0]!=='/'){
+		_settingsFile='/'+_settingsFile
+	}
+	_settingsFile='..'+_settingsFile
+	console.log('INFO in JetsonJSServer.js: use a custom settings file. _settingsFile=', _settingsFile)
+}
+
+const SETTINGS = require(_settingsFile)
+SETTINGS._settingsFile=_settingsFile
+
+const GPIO = require('./wrappers/GPIO')
+GPIO.init(SETTINGS)
+
 const EXECSH = require('./wrappers/ExecSh')
 
 //HTTP Services:
@@ -20,5 +36,5 @@ ServiceAppWS.init(SETTINGS, ServiceExtWS)
 //launch the client side with electron if required in the settings:
 if (SETTINGS.client.isAutoStartElectron){
 	console.log('INFO in JetsonJSServer.js: start electron client...')
-	setTimeout(EXECSH.exec_cmd.bind(null, '../client/electron/startElectronClient.sh', false), 1000)
+	setTimeout(EXECSH.exec_cmd.bind(null, '../client/electron/startElectronClient.sh '+_settingsFile, false), 1000)
 }

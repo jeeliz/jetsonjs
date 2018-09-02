@@ -1,5 +1,10 @@
 const {app, BrowserWindow} = require('electron');
-const SETTINGS=require('../../settings');
+let settingsPath='../../settings'
+if (process.argv && process.argv.length && process.argv.length>=2){
+  settingsPath='../'+process.argv[2];
+}
+console.log('INFO in mainElectron.js: settingsPath=', settingsPath);
+const SETTINGS=require(settingsPath);
 
 let mainWindow;
 

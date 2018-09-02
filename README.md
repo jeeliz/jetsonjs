@@ -21,6 +21,7 @@ Embedded systems with JavaScript/WebGL.
 * [Specifications](#specifications)
   * [JetsonJSClient.js](#jetsonjsclientjs)
   * [Final webapp](#final-webapp)
+  * [Specify configuration file](#specify-configuration-file)
 * [See also](#see-also)
 * [License](#license)
 * [References](#references)
@@ -84,7 +85,7 @@ Optional features:
   * `/wrappers/`: various scripts to run shell commands, to play with GPIOs, to config wifi...
   * `/wifiConfigs/`: save wifi configurations here
 * `/test/index.html`: test the final web application and the connection with the Jetson. Should be launched in your browser (NOT the Jetson browser)
-* `/settings.js`: configuration file, both for client and server side
+* `/settings.js`: default configuration file, both for client and server side
 * `/setup.sh`: the setup bash script (see [the setup section](#setup))
 * `/start.sh`: the start bash script
 
@@ -325,6 +326,16 @@ socket.addEventListener('message', function (event) {
     }
 });
 ```
+
+## Specify configuration file
+it is possible to specify another configuration file than `settings.js`.
+It can be useful to serve a client application and to use a configuration file outside the JetsonJS git repository.
+To specify a custom configuration file, you need to launch:
+```
+start.sh <pathOfConfigurationFile>
+```
+The path of the configuration file should be given as a relative path, from the root path of this project.
+
 
 ## See also
 [@Jeeliz](https://jeeliz.com) we have developed a very fast deep learning technology running in JavaScript/WebGL. It runs fully client side using the GPU of the device. It is perfect for progressive web applications. It is so fast that it can analyze video in real-time for these applications:

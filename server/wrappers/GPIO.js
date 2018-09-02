@@ -1,6 +1,10 @@
-const SETTINGS=require('../../settings')
 const EXECSH=require('./ExecSh')
 
+
+let SETTINGS
+const init=(settings)=>{
+	SETTINGS=settings
+}
 
 //inspired from: https://devtalk.nvidia.com/default/topic/1020887/jetson-tx2/how-to-configure-a-gpio-on-tx2-/
 const set=(nb, val)=>{
@@ -10,5 +14,6 @@ const set=(nb, val)=>{
 }
 
 module.exports={
+	init: init,
 	set: set
 }
