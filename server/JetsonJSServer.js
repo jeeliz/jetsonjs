@@ -44,10 +44,15 @@ let _checkDiskTimer=false
 if (SETTINGS.server.checkDisk){
 	const check_disk=()=>{
 
-		EXECSH('ls '+SETTINGS.server.checkDisk.path, (true, stdout, stderr)=>{
-			console.log('Checkdsk: stderr=', stderr.length, ',', stderr)
-			setTimeout(check_disk, SETTINGS.server.checkDisk.interval)
-		}
+		EXECSH.exec_cmd('ls '+SETTINGS.server.checkDisk.path, (isSuccess, stdout, stderr)=>{
+			console.log('Checkdsk: stderr=', stderr.length, ',err=', isSuccess)
+			if (!isSuccess || stderr.length){
+				//EXECSH.exec_cmd('..'+SETTINGS.server.checkDisk.command, false)
+				process.exit(1)
+			} else {
+				setTimeout(check_disk, SETTINGS.server.checkDisk.interval)
+			}
+		})
 		
 	}
 
