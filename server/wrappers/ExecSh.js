@@ -11,9 +11,9 @@ const exec_cmd=(shellCmd, callback)=>{
 	  }
 
 	  // the *entire* stdout and stderr (buffered)
-	  console.log('INFO in ExecSh - exec_cmd(): ', shellCmd, 'results:')
-	  console.log(`stdout: ${stdout}`)
-	  console.log(`stderr: ${stderr}`)
+	  //console.log('INFO in ExecSh - exec_cmd(): ', shellCmd, 'results:')
+	  //console.log(`stdout: ${stdout}`)
+	  //console.log(`stderr: ${stderr}`)
 	  if (callback){
 	  	callback(true, stdout, stderr)
 	  }

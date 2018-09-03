@@ -38,3 +38,19 @@ if (SETTINGS.client.isAutoStartElectron){
 	console.log('INFO in JetsonJSServer.js: start electron client...')
 	setTimeout(EXECSH.exec_cmd.bind(null, '../client/electron/startElectronClient.sh '+_settingsFile, false), 1000)
 }
+
+//launch the checkdisk if required in the settings:
+let _checkDiskTimer=false
+if (SETTINGS.server.checkDisk){
+	const check_disk=()=>{
+
+		EXECSH('ls '+SETTINGS.server.checkDisk.path, (true, stdout, stderr)=>{
+			console.log('Checkdsk: stderr=', stderr.length, ',', stderr)
+			setTimeout(check_disk, SETTINGS.server.checkDisk.interval)
+		}
+		
+	}
+
+
+	check_disk()
+}

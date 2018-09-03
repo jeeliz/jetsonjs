@@ -13,7 +13,14 @@ const SETTINGS={
 		serviceAppHTTPPath: '/client/apps/sampleApp/', //goven from jetsonJS path
 		serviceAppWSPort: 5000,    // ws://127.0.0.1
 		serviceExtWSPort: 8888,       // ws://<extIp>
-		isInvertGPIO: true
+		isInvertGPIO: true,
+
+		checkDisk: false,
+		/*checkDisk: { //if not false, check regularly a drive and launch a bash script if disconnected
+			interval: 1000, //in ms
+			path: '/',
+			command: '/debug/restart.sh' //path from jetsonjs/
+		}*/
 	}
 } 
 
