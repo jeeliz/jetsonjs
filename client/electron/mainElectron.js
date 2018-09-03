@@ -32,7 +32,7 @@ app.on('ready', function() {
 	skipTaskBar:true,
 	kiosk:true,
 	title:'JetsonJS client',
-	disableAutoHideCursor:true});
+	disableAutoHideCursor:false});
 
   // and load the index.html of the app.
   //mainWindow.loadURL('file://' + __dirname + '/index.html');
