@@ -18,6 +18,7 @@ Embedded systems with JavaScript/WebGL.
   * [Setup packages](#setup-packages)
   * [Security](#security)
   * [Add sudo rights](#add-sudo-rights)
+  * [Autostart](#autostart)
 * [Specifications](#specifications)
   * [JetsonJSClient.js](#jetsonjsclientjs)
   * [Final webapp](#final-webapp)
@@ -239,6 +240,38 @@ nvidia ALL=(ALL) NOPASSWD: /sbin/shutdown
 nvidia ALL=(ALL) NOPASSWD: /bin/mount
 ```
 Save and exit.
+
+
+### Autostart
+You may want to auto start JetsonJS as the `nvidia` user in the TTY1.
+First you need to install `mingetty` to handle auto login:
+
+```
+mkdir ~/src
+cd ~/src
+wget https://ftp.sjtu.edu.cn/sites/ftp.debian.org/debian/pool/main/m/mingetty/mingetty_1.08-2_arm64.deb
+sudo dpkg -i mingetty_1.08-2_arm64.deb
+```
+
+Then edit the `TTY1` conf file: `sudo nano /etc/init/tty1.conf` and replace:
+```
+exec /sbin/getty -8 38400 tty1
+```
+by:
+
+```
+exec /sbin/mingetty --autologin nvidia --noclear tty1
+```
+
+Now we have to edit `/home/nvidia/.bash_profile` which is launch immediately after login. First we check in which TTY we are. If we are in `tty1` we start JetsonJS. So we launch `nano /home/nvidia/.bash_profile` and we put at the end:
+```
+if [ $(tty) = "/dev/tty1" ]
+then
+  echo "launch JetsonJS from .bash_profile..."
+  cd /home/nvidia/jetsonjs
+  ./start.sh
+fi
+```
 
 
 
