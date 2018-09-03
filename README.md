@@ -19,6 +19,7 @@ Embedded systems with JavaScript/WebGL.
   * [Security](#security)
   * [Add sudo rights](#add-sudo-rights)
   * [Autostart](#autostart)
+  * [Disable DPMS](#disable-dpms)
 * [Specifications](#specifications)
   * [JetsonJSClient.js](#jetsonjsclientjs)
   * [Final webapp](#final-webapp)
@@ -274,7 +275,19 @@ then
 fi
 ```
 
-
+### Disable DPMS
+If DPMS is not disabled, The screen can switch to energy saving mode.
+To disable DPMS, edit `xorg.conf`:
+```
+sudo nano /etc/X11/xorg.conf
+```
+and add this content:
+```
+Section "Extensions"
+    Option      "DPMS" "Disable"
+EndSection
+```
+Save and exit.
 
 
 ## Specifications
