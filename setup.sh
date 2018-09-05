@@ -36,5 +36,8 @@ npm install
 cd ../client/electron
 npm install
 #
+echo "INSTALL CAMERA CONTROL"
+sudo apt-get install uvcdynctrl
+#
 echo "REMOVE .XINIT"
 mv ~/.xinit ~/.xinit.bak
