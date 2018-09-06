@@ -37,7 +37,13 @@ cd ../client/electron
 npm install
 #
 echo "INSTALL CAMERA CONTROL"
-sudo apt-get install uvcdynctrl
+cd ~/src
+wget http://mirrors.kernel.org/ubuntu/pool/universe/libw/libwebcam/uvcdynctrl-data_0.2.4-1.1ubuntu1_all.deb
+wget http://old-releases.ubuntu.com/ubuntu/pool/universe/libw/libwebcam/uvcdynctrl_0.2.4-1.1ubuntu1_arm64.deb
+wget http://old-releases.ubuntu.com/ubuntu/pool/universe/libw/libwebcam/libwebcam0_0.2.4-1.1ubuntu1_arm64.deb
+sudo dpkg -i uvcdynctrl-data_0.2.4-1.1ubuntu1_all.deb
+sudo dpkg -i libwebcam0_0.2.4-1.1ubuntu1_arm64.deb
+sudo dpkg -i uvcdynctrl_0.2.4-1.1ubuntu1_arm64.deb
 #
 echo "REMOVE .XINIT"
 mv ~/.xinit ~/.xinit.bak
