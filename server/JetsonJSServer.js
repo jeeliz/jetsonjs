@@ -1,6 +1,6 @@
 //get the settings files:
 let _settingsFile='../settings'
-if (process.argv && process.argv.length && process.argv.length>=2){
+if (process.argv && process.argv.length && process.argv.length>2){
 	_settingsFile=process.argv[2].split('.js').shift() //remove .js extension if necessary
 	if (_settingsFile[0]!=='/'){
 		_settingsFile='/'+_settingsFile
