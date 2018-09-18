@@ -46,4 +46,5 @@ sudo dpkg -i libwebcam0_0.2.4-1.1ubuntu1_arm64.deb
 sudo dpkg -i uvcdynctrl_0.2.4-1.1ubuntu1_arm64.deb
 #
 echo "REMOVE .XINIT"
-mv ~/.xinit ~/.xinit.bak
+mv ~/.xinit ~/.xinit.bak 2>/dev/null
+echo "/DONE, JETSONJS IS SETUPED NOW :)"
