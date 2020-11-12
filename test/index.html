@@ -1,51 +1,50 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>JETSONJS - TEST FINAL APP</title>
-	<meta charset='utf-8' />
-	<script>
-		function connect(){
-			var jetsonIP=document.getElementById('JetsonIP').value;
-			
-			var socket=new WebSocket('ws://'+jetsonIP+':8888') //port hould be server.serviceExtWSPort in settings.js
-		
-			// Connection opened
-			socket.addEventListener('open', function (event) {
-				console.log('Connected!')
-			});
+  <title>JETSONJS - TEST FINAL APP</title>
+  <meta charset='utf-8' />
+  <script>
+    function connect(){
+      const jetsonIP = document.getElementById('JetsonIP').value;
+      
+      const socket = new WebSocket('ws://'+jetsonIP+':8888') // port hould be server.serviceExtWSPort in settings.js
+    
+      // Connection opened
+      socket.addEventListener('open', function (event) {
+        console.log('Connected!')
+      });
 
-			// Listen for messages
-			var domLogs=document.getElementById('logs');
-			domLogs.value='';
-			socket.addEventListener('message', function (event) {
-			    var dataParsed=JSON.parse(event.data);
-			    var typeLabel=dataParsed.t;
-			    var data=dataParsed.m;
+      // Listen for messages
+      const domLogs = document.getElementById('logs');
+      domLogs.value = '';
+      socket.addEventListener('message', function (event) {
+        const dataParsed = JSON.parse(event.data);
+        const typeLabel = dataParsed.t;
+        const data = dataParsed.m;
 
-			    switch(typeLabel){
-			    	case 'VAL':
-			    		domLogs.value+=JSON.stringify(data)+'\n'
-			    		break;
-			    }
-			});
-		} //end connect()
+        switch(typeLabel){
+          case 'VAL':
+            domLogs.value += JSON.stringify(data) + '\n';
+            break;
+        }
+      });
+    } //end connect()
 
-		function clean(){
-			console.log('Clear!');
-			document.getElementById('logs').value='';
-		}
-	</script>
+    function clean(){
+      console.log('Clear!');
+      document.getElementById('logs').value = '';
+    }
+  </script>
 </head>
 <body style='background-color: silver'>
-	<h1>JETSONJS - TEST FINAL APP</h1>
+  <h1>JETSONJS - TEST FINAL APP</h1>
 
-	Jetson IP address : <input id='JetsonIP' value='127.0.0.1'/><button onclick='connect()'>CONNECT</button>
-	<br/><br/>
+  Jetson IP address: <input id='JetsonIP' value='127.0.0.1'/><button onclick='connect()'>CONNECT</button>
+  <br/><br/>
 
-	values received : <button onclick='clean()' style='margin-left: 20px'>CLEAR</button><br/>
-	<textarea id='logs' style='width: 80vw; height: 80vh'>
+  values received: <button onclick='clean()' style='margin-left: 20px'>CLEAR</button><br/>
+  <textarea id='logs' style='width: 80vw; height: 80vh'>
 
-
-	</textarea>
+  </textarea>
 </body>
 </html>

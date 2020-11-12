@@ -148,7 +148,7 @@ then edit the generated configuration file:
 sudo vi /etc/NetworkManager/system-connections/<SSIDOFYOURNETWORK>
 ```
 
-and put (type `i` to enter insert mode) :
+and put (type `i` to enter insert mode):
 ```
 [wifi]
 mode=infrastructure
@@ -280,38 +280,38 @@ fi
 
 ### JetsonJSClient.js
 
-`JetsonJSClient.js` and `settings.js` should be included in the HTML code of the web application running on the Jetson :
+`JetsonJSClient.js` and `settings.js` should be included in the HTML code of the web application running on the Jetson:
 ```html
 <script src='auto/settings.js'></script>
 <script src='auto/JetsonJSClient.js'></script>
 ```
-You can take a look at [/client/apps/sampleApp/](/client/apps/sampleApp/) to get an example. These scripts are prefixed by `auto/` because they are automatically hosted as `<app path>/auto/` when the nodeJS server is launched. After the loading of the page you should initialize `JETSONJSCLIENT` with :
+You can take a look at [/client/apps/sampleApp/](/client/apps/sampleApp/) to get an example. These scripts are prefixed by `auto/` because they are automatically hosted as `<app path>/auto/` when the nodeJS server is launched. After the loading of the page you should initialize `JETSONJSCLIENT` with:
 
 ```javascript
 JETSONJSCLIENT.init({
-  callbackReady:   //function, called when the API is initialized,
-  callbackConnect: //function, called when the External client is connected or disconnected,
-     // the external client is the user in the final browser
-     // this function is called with a boolean as argument
-     // which is true if a user is connected, false otherwise
-     // this function allows to slow down the rendering loop to save the GPU
-     // if no user is connected
-  wifiConfigIds: //dictionnary, to connect the Wifi widget to the controller
-     // see /client/apps/sampleApp/main.js to get an example
-  keyboardTargetsClass: //string, class of the <input> where a virtual keyboard should be displayed
-     // see  /client/apps/sampleApp/main.js to get an example
-     // of integration of the virtual keyboard
-  keyboardAttachId: //string, id of the element where the keyboard will be attached
+  callbackReady:   // function, called when the API is initialized,
+  callbackConnect: // function, called when the External client is connected or disconnected,
+   // the external client is the user in the final browser
+   // this function is called with a boolean as argument
+   // which is true if a user is connected, false otherwise
+   // this function allows to slow down the rendering loop to save the GPU
+   // if no user is connected
+  wifiConfigIds: // dictionnary, to connect the Wifi widget to the controller
+   // see /client/apps/sampleApp/main.js to get an example
+  keyboardTargetsClass: // string, class of the <input> where a virtual keyboard should be displayed
+   // see  /client/apps/sampleApp/main.js to get an example
+   // of integration of the virtual keyboard
+  keyboardAttachId: // string, id of the element where the keyboard will be attached
 })
 ```
 
-You can then use these methods :
+You can then use these methods:
 
-`JETSONJSCLIENT.send_value(<dictionnary> dataDict)`: send a dictionnary of values to the server part. Example :
+`JETSONJSCLIENT.send_value(<dictionnary> dataDict)`: send a dictionnary of values to the server part. Example:
 ```javascript
 JETSONJSCLIENT.send_value({
-	signalCos: Math.cos(w),
-	signalSin: Math.sin(w)
+  signalCos: Math.cos(w),
+  signalSin: Math.sin(w)
 })
 ```
 
@@ -336,28 +336,29 @@ The final web application (not running in the Jetson but on the user's browser) 
 This part is not mandatory: you can use JetsonJS to run JavaScript/WebGL code on the Jetson without linking it to an external web application. For example if the jetson is directly pluggued to an HDMI display.
 
 
-There is no buffering: if a value is sent from the Jetson when the user is not connected, this value will be lost. We would rather drop some values than introducing a latency. The [test application](/test/index.html), served statically by the NodeJS server on port 3000 show how to connect externally to the Jetson websocket server and read the values :
+There is no buffering: if a value is sent from the Jetson when the user is not connected, this value will be lost. We would rather drop some values than introducing a latency. The [test application](/test/index.html), served statically by the NodeJS server on port 3000 show how to connect externally to the Jetson websocket server and read the values:
+
 ```javascript
-var socket=new WebSocket('ws://'+jetsonIP+':8888') //port hould be server.serviceExtWSPort in settings.js
-		
+const socket = new WebSocket('ws://'+jetsonIP+':8888') // port hould be server.serviceExtWSPort in settings.js
+    
 // Connection opened
 socket.addEventListener('open', function (event) {
-	console.log('Connected!')
+  console.log('Connected!')
 });
 
 // Listen for messages
-var domLogs=document.getElementById('logs');
-domLogs.value='';
+const domLogs = document.getElementById('logs');
+domLogs.value = '';
 socket.addEventListener('message', function (event) {
-    var dataParsed=JSON.parse(event.data);
-    var typeLabel=dataParsed.t;
-    var data=dataParsed.m;
+  const dataParsed = JSON.parse(event.data);
+  const typeLabel = dataParsed.t;
+  const data = dataParsed.m;
 
-    switch(typeLabel){
-    	case 'VAL':
-    		domLogs.value+=JSON.stringify(data)+'\n'
-    		break;
-    }
+  switch(typeLabel){
+    case 'VAL':
+      domLogs.value += JSON.stringify(data) + '\n';
+      break;
+  }
 });
 ```
 

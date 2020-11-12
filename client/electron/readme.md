@@ -12,6 +12,6 @@ Install Electron:
 sudo npm install electron -g
 ```
 
-Then launch `./startElectronClient.sh'. The server part should be running. Note: it is possible and recommanded to launch the electron client part automatically after the server start by enabling `isAutoStartElectron` parameters in `/settings.js`.
+Then launch `./startElectronClient.sh`. The server part should be running. Note: it is possible and recommanded to launch the electron client part automatically after the server start by enabling `isAutoStartElectron` parameters in `/settings.js`.
 
 To build this electron app, I got inspired by [the WebGL Electron sample app](https://github.com/hokein/electron-sample-apps/tree/master/webgl)

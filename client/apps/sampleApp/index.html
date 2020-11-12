@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JetsonJS Sample app</title>
-	<meta charset='utf-8' />
+  <title>JetsonJS Sample app</title>
+  <meta charset='utf-8' />
 
-	<!-- YOU SHOULD INCLUDE THE SETTINGS FILE -->
-	<script src='auto/settings.js'></script>
+  <!-- YOU SHOULD INCLUDE THE SETTINGS FILE -->
+  <script src='auto/settings.js'></script>
 
-	<!-- YOU SHOULD INCLUDE JETSONJSCLIENT -->
-	<script src='auto/JetsonJSClient.js'></script>
-
-
-	<!-- INCLUDE JQUERY -->
-	<script>
-		JETSONJSCLIENT.fix_electron();
-	</script>
-	<script src='auto/libs/jquery/jquery-3.3.1.min.js'></script>
-
-	<!-- INCLUDE JQUERY UI (required for virtual keyboard and <select> fix) -->
-	<script src='auto/libs/jquery-ui/jquery-ui.min.js'></script>
-	<!-- <link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min_flat.css' /> -->
-	<link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min.css' />
-	<link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.theme.min.css' />
+  <!-- YOU SHOULD INCLUDE JETSONJSCLIENT -->
+  <script src='auto/JetsonJSClient.js'></script>
 
 
-	<!-- INCLUDE VIRTUAL KEYBOARD STYLE -->
-	<link rel='stylesheet' type='text/css' href='auto/libs/MottieKeyboard/css/keyboard-dark.min.css' />
-	<link rel='stylesheet' type='text/css' href='auto/libs/custom/keyboard.css' />
+  <!-- INCLUDE JQUERY -->
+  <script>
+    JETSONJSCLIENT.fix_electron();
+  </script>
+  <script src='auto/libs/jquery/jquery-3.3.1.min.js'></script>
 
-	<!-- MAIN SCRIPT -->
-	<script src='main.js'></script>
+  <!-- INCLUDE JQUERY UI (required for virtual keyboard and <select> fix) -->
+  <script src='auto/libs/jquery-ui/jquery-ui.min.js'></script>
+  <!-- <link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min_flat.css' /> -->
+  <link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.min.css' />
+  <link rel='stylesheet' type='text/css' href='auto/libs/jquery-ui/jquery-ui.theme.min.css' />
 
-	<link rel='stylesheet' type='text/css' href='wifiWidget.css' />
+
+  <!-- INCLUDE VIRTUAL KEYBOARD STYLE -->
+  <link rel='stylesheet' type='text/css' href='auto/libs/MottieKeyboard/css/keyboard-dark.min.css' />
+  <link rel='stylesheet' type='text/css' href='auto/libs/custom/keyboard.css' />
+
+  <!-- MAIN SCRIPT -->
+  <script src='main.js'></script>
+
+  <link rel='stylesheet' type='text/css' href='wifiWidget.css' />
 
 </head> 
 
 <body onload='main()'>
-	<h1>JetsonJS sample app</h1>
+  <h1>JetsonJS sample app</h1>
 
-	<p>
-		<a href='https://github.com/jeeliz/jetsonjs'>Github repository of JetsonJS</a>
-	</p>
-	<p>
-		This application sends 2 sinusoïdals signals (<b>signalCos</b> and <b>signalSin</b>) with a period of 1 second. A new value is sent each 10ms.
-	</p>
-
-
-	<button onclick="if(confirm('Do u really want to shutdown the Jetson ???')){JETSONJSCLIENT.shutdown()}">SHUTDOWN THE JETSON</button><br/><br/>
-
-	<button onclick="JETSONJSCLIENT.close()">CLOSE ELECTRON WIN</button><br/><br/>
-
-	<button onclick="JETSONJSCLIENT.open_electronDevTools();">OPEN DEVTOOLS</button><br/><br/>
+  <p>
+    <a href='https://github.com/jeeliz/jetsonjs'>Github repository of JetsonJS</a>
+  </p>
+  <p>
+    This application sends 2 sinusoïdals signals (<b>signalCos</b> and <b>signalSin</b>) with a period of 1 second. A new value is sent each 10ms.
+  </p>
 
 
-	CHANGE THE VALUE OF A GPIO - number: <input id='GPIONumber' value='254' class='keyboard' style='width: 30px'/>&nbsp;&nbsp;
-	<button onclick='updateGPIO(0)' style='width: 80px'>SET TO 0</button> &nbsp;&nbsp; 
-	<button onclick='updateGPIO(1)' style='width: 80px'>SET TO 1</button><br/><br/>
+  <button onclick="if(confirm('Do u really want to shutdown the Jetson ???')){JETSONJSCLIENT.shutdown()}">SHUTDOWN THE JETSON</button><br/><br/>
+
+  <button onclick="JETSONJSCLIENT.close()">CLOSE ELECTRON WIN</button><br/><br/>
+
+  <button onclick="JETSONJSCLIENT.open_electronDevTools();">OPEN DEVTOOLS</button><br/><br/>
+
+
+  CHANGE THE VALUE OF A GPIO - number: <input id='GPIONumber' value='254' class='keyboard' style='width: 30px'/>&nbsp;&nbsp;
+  <button onclick='updateGPIO(0)' style='width: 80px'>SET TO 0</button> &nbsp;&nbsp; 
+  <button onclick='updateGPIO(1)' style='width: 80px'>SET TO 1</button><br/><br/>
 
 
 
-	<div class='wifiConfig' id='wifiConfig'>
-		<div class='wifiConfig_title'>Wifi configuration</div>
-		
-		<div class='wifiConfig_fieldLabel'>Network:</div><select id='wifiNetworks'></select><br/>
-		<div class='wifiConfig_fieldLabel'>User (facultative):</div><input class='keyboard' type='text' id='wifiUser'/><br/>
-		<div class='wifiConfig_fieldLabel'>Password:</div><input class='keyboard' type='text' id='wifiPassword' />
-		
-		<hr/>
-		<div class='wifiConfig_fieldLabel'>State :</div><div class='wifiStatus' id='wifiStatusConnected'>connected</div><div class='wifiStatus' id='wifiStatusDisconnected'>disconnected</div>
-		<div class='wifiConfig_fieldLabel'>IP :</div><div id='wifiStatusIP'></div><br/> 
+  <div class='wifiConfig' id='wifiConfig'>
+    <div class='wifiConfig_title'>Wifi configuration</div>
+    
+    <div class='wifiConfig_fieldLabel'>Network:</div><select id='wifiNetworks'></select><br/>
+    <div class='wifiConfig_fieldLabel'>User (facultative):</div><input class='keyboard' type='text' id='wifiUser'/><br/>
+    <div class='wifiConfig_fieldLabel'>Password:</div><input class='keyboard' type='text' id='wifiPassword' />
+    
+    <hr/>
+    <div class='wifiConfig_fieldLabel'>State:</div><div class='wifiStatus' id='wifiStatusConnected'>connected</div><div class='wifiStatus' id='wifiStatusDisconnected'>disconnected</div>
+    <div class='wifiConfig_fieldLabel'>IP:</div><div id='wifiStatusIP'></div><br/> 
 
-		<button id='wifiConfig_valid'>APPLY CONFIGURATION</button>
-		<button id='wifiConfig_refresh'>REFRESH NETWORKS</button>
-	</div>
+    <button id='wifiConfig_valid'>APPLY CONFIGURATION</button>
+    <button id='wifiConfig_refresh'>REFRESH NETWORKS</button>
+  </div>
 
 
-	<div id='virtualKeyboard'>
+  <div id='virtualKeyboard'>
 
-	</div>
+  </div>
 </body>
 </html>

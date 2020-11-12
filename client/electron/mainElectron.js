@@ -1,12 +1,12 @@
 const {app, BrowserWindow} = require('electron');
-let settingsPath='../../settings'
+let settingsPath = '../../settings'
 if (process.argv && process.argv.length && process.argv.length>=2){
-  settingsPath='../'+process.argv[2];
+  settingsPath = '../' + process.argv[2];
 }
 console.log('INFO in mainElectron.js: settingsPath=', settingsPath);
-const SETTINGS=require(settingsPath);
+const SETTINGS = require(settingsPath);
 
-let mainWindow;
+let mainWindow = null;
 
 // Chrome by default black lists certain GPUs because of bugs.
 // if your are not able to view webgl try enabling --ignore-gpu-blacklist option

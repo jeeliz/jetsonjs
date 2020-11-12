@@ -2,25 +2,25 @@
 
 /* VIRTUAL KEYBOARD: */
 #virtualKeyboard {
-	display: block;
-	width: 100vw;
-	position: fixed;
-	bottom: 0px;
+  display: block;
+  width: 100vw;
+  position: fixed;
+  bottom: 0px;
 }
 
 .ui-keyboard {
-	max-height: 240px;
-	bottom: 0px!important;
+  max-height: 240px;
+  bottom: 0px!important;
 }
 
 .ui-keyboard button {
-	color: white!important; background-color: inherit!important;
-	border: none!important;
-	width: auto!important;
+  color: white!important; background-color: inherit!important;
+  border: none!important;
+  width: auto!important;
 }
 
 .ui-keyboard input {
-	color: white!important; background-color: inherit!important;
-	border: none!important;
-	width: auto!important;
+  color: white!important; background-color: inherit!important;
+  border: none!important;
+  width: auto!important;
 }
