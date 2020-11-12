@@ -12,7 +12,7 @@
     "fs": "0.0.1-security",
     "http": "0.0.0",
     "node-static": "^0.7.10",
-    "node-wifi": "^2.0.4",
+    "node-wifi": "^2.0.12",
     "pi-wifi": "^1.2.0",
     "static-server": "^2.2.1",
     "wrench": "^1.5.9",
